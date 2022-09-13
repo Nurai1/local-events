@@ -1,9 +1,14 @@
-import { createStore } from "vuex";
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
 
-export default createStore({
-  state: {},
-  getters: {},
-  mutations: {},
-  actions: {},
-  modules: {},
+export default defineStore('main', () => {
+  const chosenCity = ref('Tbilisi');
+
+  function setChosenCity(value) {
+    chosenCity.value = value;
+  }
+  return {
+    chosenCity,
+    setChosenCity,
+  };
 });
