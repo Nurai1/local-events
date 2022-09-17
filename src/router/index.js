@@ -4,6 +4,10 @@ import ChooseCity from '../components/ChooseCity.vue';
 
 const routes = [
   {
+    path: '/',
+    redirect: 'choose-city',
+  },
+  {
     path: '/choose-city',
     name: 'choose-city',
     component: ChooseCity,
@@ -14,13 +18,13 @@ const routes = [
     component: MapView,
   },
   {
-    path: '/about',
-    name: 'about',
+    path: '/create-event',
+    name: 'createEvent',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ '../views/AboutView.vue'),
+      import(/* webpackChunkName: "about" */ '../views/CreateEventView.vue'),
   },
 ];
 

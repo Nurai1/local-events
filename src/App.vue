@@ -1,25 +1,25 @@
 <template>
-  <nav>
-    <router-link to="/choose-city">Choose your city</router-link>
-    | <router-link to="/map">Map</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
+  <HeaderComp />
   <router-view />
 </template>
-
+<script setup>
+import HeaderComp from './components/HeaderComp.vue';
+</script>
 <style lang="scss">
 @use './styles/element/index.scss' as *;
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
+  height: 100%;
 }
 
 a {

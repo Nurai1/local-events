@@ -18,16 +18,19 @@ export const events = [
     building: 'Ori Suli',
     name: 'Julia Duck DJ Playing',
     eventDate: '2022-09-25T03:24:00',
+    type: 'exhibitions',
   },
   {
     building: 'Ori Suli',
     name: 'New Cider is coming this evening!',
     eventDate: '2022-09-08T19:30:00',
+    type: 'parties',
   },
   {
     building: 'Koshini Bar',
     name: 'German Industrial Techno Evening',
     eventDate: '2022-09-08T19:30:00',
+    type: 'exhibitions',
   },
 ];
 

@@ -1,12 +1,25 @@
 <template>
   <div id="base_map"></div>
+  <el-button
+    type="primary"
+    class="open_events_fixed_btn"
+    @click="store.setEventsPopupVisibility(true)"
+    >Open events and filters</el-button
+  >
 </template>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style scoped lang="scss">
 #base_map {
-  width: 65%;
-  height: 500px;
+  width: 100%;
+  height: 100%;
+}
+
+.open_events_fixed_btn {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
 }
 </style>
 <style>
@@ -18,17 +31,14 @@
 <script setup>
 import { ref, watch, computed, onBeforeMount, reactive } from 'vue';
 import mapboxgl from 'mapbox-gl';
+import { storeToRefs } from 'pinia';
 import { format } from 'date-fns';
 import useMainStore from '@/store';
 import api from '@/api/mock';
-const props = defineProps({
-  msg: String,
-});
 
 const store = useMainStore();
+const { events, buildings } = storeToRefs(store);
 
-const buildings = ref([]);
-const events = ref([]);
 const map = ref(null);
 const cityInfo = reactive({
   maxBounds: undefined,
@@ -37,7 +47,9 @@ const cityInfo = reactive({
 
 onBeforeMount(async () => {
   const response = await fetch(
-    `https://api.mapbox.com/geocoding/v5/mapbox.places/${store.chosenCity.toLowerCase()}.json?limit=1&types=place&access_token=pk.eyJ1IjoiYmxpbmRtYW4yMCIsImEiOiJjazVqbWxwMTUwNGltM2twa3VpMGc4OGZmIn0.HtBj6u91XPLtIPjg0TQoCw`
+    `https://api.mapbox.com/geocoding/v5/mapbox.places/${store.chosenCity.toLowerCase()}.json?limit=1&types=place&access_token=${
+      process.env.VUE_APP_MAPBOX_ACCESS_KEY
+    }`
   );
   const body = await response.json();
   const maxBoundsArray = body.features[0].bbox;
@@ -46,8 +58,7 @@ onBeforeMount(async () => {
 });
 
 watch(cityInfo, () => {
-  mapboxgl.accessToken =
-    'pk.eyJ1IjoiYmxpbmRtYW4yMCIsImEiOiJjazVqbW92aHowNG5qM2txazM4MHR1b3o0In0.OBRzj-3gGUTHipAJbpClPw';
+  mapboxgl.accessToken = process.env.VUE_APP_MAPBOX_ACCESS_KEY;
   map.value = new mapboxgl.Map({
     container: 'base_map', // container ID
     style: 'mapbox://styles/mapbox/outdoors-v11', // style URL
@@ -69,16 +80,18 @@ watch(cityInfo, () => {
 
 const getBuildingsAsync = async () => {
   const response = await api.getBuildings();
-  buildings.value = await response.json();
+  const result = await response.json();
+  store.setBuildings(result);
 };
 getBuildingsAsync();
 const getEventsAsync = async () => {
   const response = await api.getEvents();
-  events.value = await response.json();
+  const result = await response.json();
+  store.setEvents(result);
 };
 getEventsAsync();
 
-const buildingsEvents = computed(() => {
+const eventsByBuildings = computed(() => {
   const eventsData = events.value;
   return buildings.value.reduce((acc, val) => {
     const thisBuildingEvents = eventsData.filter(
@@ -91,11 +104,11 @@ const buildingsEvents = computed(() => {
   }, {});
 });
 
-watch(buildingsEvents, () => {
+watch(eventsByBuildings, () => {
   buildings.value.forEach((building) => {
     let popUpHtml =
       '<div>' +
-        buildingsEvents.value?.[building.id]?.reduce((acc, event) => {
+        eventsByBuildings.value?.[building.id]?.reduce((acc, event) => {
           const formattedDate = format(new Date(event.eventDate), 'do MMMM');
           const formattedTime = format(new Date(event.eventDate), "HH':'mm");
           return (

@@ -33,8 +33,13 @@ getCitiesAsync();
 <style scoped lang="scss">
 @use '../styles/element/index.scss' as *;
 
-.container > * {
-  width: 500px;
+.container {
+  padding-left: 10px;
+  padding-right: 10px;
+  & > * {
+    max-width: 500px;
+    width: 100%;
+  }
 }
 
 .el-row {
