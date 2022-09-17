@@ -104,7 +104,7 @@ const eventsByBuildings = computed(() => {
   }, {});
 });
 
-watch(eventsByBuildings, () => {
+watch([map, eventsByBuildings], () => {
   buildings.value.forEach((building) => {
     let popUpHtml =
       '<div>' +
