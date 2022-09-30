@@ -1,4 +1,4 @@
-import { buildings, events, cities } from './data';
+import { placesTbilisi, eventsTbilisi, cities } from './data';
 
 const fetch = (mockData, time = 300) => {
   return new Promise((resolve) => {
@@ -11,11 +11,31 @@ const fetch = (mockData, time = 300) => {
 };
 
 export default {
-  getBuildings() {
-    return fetch(buildings);
+  getPlacesByCity(cityName) {
+    if (cityName === 'Tbilisi') {
+      return fetch(placesTbilisi);
+    }
+    if (cityName === 'Moscow') {
+      return fetch([]);
+    }
+    return fetch({
+      error: "This city doesn't exist",
+      message: "This city doesn't exist",
+      code: 500,
+    });
   },
-  getEvents() {
-    return fetch(events);
+  getEventsByCity(cityName) {
+    if (cityName === 'Tbilisi') {
+      return fetch(eventsTbilisi);
+    }
+    if (cityName === 'Moscow') {
+      return fetch([]);
+    }
+    return fetch({
+      error: "This city doesn't exist",
+      message: "This city doesn't exist",
+      code: 500,
+    });
   },
   getCities() {
     return fetch(cities);

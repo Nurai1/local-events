@@ -1,11 +1,36 @@
+<script setup>
+import { useRouter } from 'vue-router';
+import { ref, watch } from 'vue';
+import api from '@/api/mock';
+import useMainStore from '@/store';
+
+const store = useMainStore();
+const router = useRouter();
+const cities = ref([]);
+const currentCity = ref('');
+
+watch(currentCity, () => {
+  const chosenCity = {
+    value: currentCity.value,
+    country: cities.value.find((city) => city.value === currentCity.value)
+      .country,
+  };
+  store.setChosenCity(chosenCity);
+});
+
+const getCitiesAsync = async () => {
+  const response = await api.getCities();
+  cities.value = await response.json();
+};
+getCitiesAsync();
+</script>
+
 <template>
   <el-row class="container" justify="center">
-    <el-select
-      v-model="store.chosenCity"
-      @change="store.setChosenCity"
-      placeholder="Choose your city"
-    >
-      <el-option v-for="city in cities" :key="city.id" :value="city.value" />
+    <el-select v-model="currentCity" placeholder="Choose your city">
+      <el-option v-for="city in cities" :key="city.id" :value="city.value">{{
+        city.value
+      }}</el-option>
     </el-select>
   </el-row>
   <el-row class="container" justify="center">
@@ -14,22 +39,7 @@
     </el-button>
   </el-row>
 </template>
-<script setup>
-import { useRouter } from 'vue-router';
-import { ref } from 'vue';
-import api from '@/api/mock';
-import useMainStore from '@/store';
 
-const store = useMainStore();
-const router = useRouter();
-const cities = ref([]);
-
-const getCitiesAsync = async () => {
-  const response = await api.getCities();
-  cities.value = await response.json();
-};
-getCitiesAsync();
-</script>
 <style scoped lang="scss">
 @use '../styles/element/index.scss' as *;
 

@@ -30,4 +30,23 @@ a {
 nav a.router-link-exact-active {
   // color: $color-success;
 }
+
+.title {
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.subtitle {
+  color: $color-info;
+  font-size: 14px;
+}
+
+.v-align {
+  display: flex;
+  align-items: center;
+}
+
+.flx {
+  display: flex;
+}
 </style>
