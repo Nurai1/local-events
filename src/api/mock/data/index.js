@@ -28,7 +28,20 @@ export const eventsTbilisi = [
   {
     id: getUid(),
     place: 'Ori Suli',
-    name: 'Julia Duck DJ Playing',
+    name: 'Новый сидр скоро появится!',
+    eventDate: '2022-09-08T19:30:00',
+    type: 'parties',
+    price: 0.0,
+    description: undefined,
+    city: {
+      value: 'Tbilisi',
+      country: 'Georgia',
+    },
+  },
+  {
+    id: getUid(),
+    place: 'Ori Suli',
+    name: 'Julia Duck DJ будет играть в баре',
     eventDate: '2022-09-25T03:24:00',
     type: 'exhibitions',
     price: 15.0,
@@ -40,26 +53,13 @@ export const eventsTbilisi = [
   },
   {
     id: getUid(),
-    place: 'Ori Suli',
-    name: 'New Cider is coming this evening!',
-    eventDate: '2022-09-08T19:30:00',
-    type: 'parties',
-    price: 20.0,
-    description: undefined,
-    city: {
-      value: 'Tbilisi',
-      country: 'Georgia',
-    },
-  },
-  {
-    id: getUid(),
     place: 'Koshini Bar',
-    name: 'German Industrial Techno Evening',
+    name: 'Немецкий индастриал техно вечеринка',
     eventDate: '2022-09-08T19:30:00',
     type: 'exhibitions',
     price: 250.0,
     description:
-      "My biggest love 'n friend DJ Dictator's death comes to us to make coolest techno evening in this city this week.",
+      "Мой большой и горячо любимый друг и диджей DJ Dictator's Death приезжает к нам сделоать крутейший техно вечер в этом городе.",
     city: {
       value: 'Tbilisi',
       country: 'Georgia',

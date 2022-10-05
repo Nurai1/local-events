@@ -23,37 +23,37 @@ export default defineStore('main', () => {
   const standardFilters = reactive([
     {
       id: 'lectures',
-      value: 'Lectures',
+      value: 'Лекции',
       color: '#D4E09B',
       isActive: true,
     },
     {
       id: 'shows',
-      value: 'Shows',
+      value: 'Представления',
       color: '#E5EAB7',
       isActive: true,
     },
     {
       id: 'parties',
-      value: 'Parties',
+      value: 'Вечеринки',
       color: '#F6F4D2',
       isActive: true,
     },
     {
       id: 'trips',
-      value: 'Trips',
+      value: 'Путешествия',
       color: '#CBDFBD',
       isActive: true,
     },
     {
       id: 'custom',
-      value: 'Custom',
+      value: 'Добавленные',
       color: '#DEBE9B',
       isActive: true,
     },
     {
       id: 'exhibitions',
-      value: 'Exhibitions',
+      value: 'Выставки',
       color: '#F19C79',
       isActive: true,
     },
@@ -95,6 +95,17 @@ export default defineStore('main', () => {
     return filteredEvents.value.filter((event) => !event.place);
   });
 
+  const chosenEvent = ref({});
+  function setChosenEvent(value) {
+    chosenEvent.value = value;
+  }
+
+  // any events by place or by coordinates
+  const eventsByPoint = ref(null);
+  function setEventsByPoint(value) {
+    eventsByPoint.value = value;
+  }
+
   return {
     chosenCity,
     setChosenCity,
@@ -112,5 +123,9 @@ export default defineStore('main', () => {
     filteredEvents,
     filteredEventsWithPlace,
     filteredEventsWithCoords,
+    chosenEvent,
+    setChosenEvent,
+    eventsByPoint,
+    setEventsByPoint,
   };
 });

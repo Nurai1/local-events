@@ -41,9 +41,14 @@ nav a.router-link-exact-active {
   font-size: 14px;
 }
 
-.v-align {
+.al-it-cen {
   display: flex;
   align-items: center;
+}
+
+.jus-con-sp-bet {
+  display: flex;
+  justify-content: space-between;
 }
 
 .flx {

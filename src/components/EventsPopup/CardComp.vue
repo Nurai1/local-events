@@ -2,6 +2,7 @@
 import { ref, watch } from 'vue';
 import { Tools as ToolsIcon } from '@element-plus/icons-vue';
 import { format } from 'date-fns';
+import omit from 'lodash/omit';
 import {
   BookIcon,
   BusIcon,
@@ -10,16 +11,29 @@ import {
   WandMagicIcon,
 } from '../icons';
 import useMainStore from '@/store';
-import { COUNTRY_CURRENCY_MAP } from '@/constants';
+import PriceBlock from '@/ui/PriceBlock.vue';
 
 const store = useMainStore();
 const props = defineProps({
-  name: String,
-  type: String,
+  id: {
+    required: true,
+    type: String,
+  },
+  name: {
+    required: true,
+    type: String,
+  },
+  type: {
+    required: true,
+    type: String,
+  },
   price: Number,
   eventDate: String,
   place: String,
   description: String,
+  truncateDescription: Boolean,
+  cardShadow: String,
+  isOnlyEvent: Boolean,
 });
 
 const descriptionRef = ref(null);
@@ -34,9 +48,13 @@ watch(descriptionRef, () => {
     }
   }
 });
-watch(isDescriptionTruncated, () => {
-  console.log(isDescriptionTruncated.value);
-});
+
+const onCardClick = () => {
+  if (isDescriptionTruncated.value) {
+    store.setEventInfoPopupVisibility(true);
+    store.setChosenEvent(omit(props, ['truncateDescription', 'cardShadow']));
+  }
+};
 
 const filterToIconMap = {
   lectures: BookIcon,
@@ -57,12 +75,20 @@ const formattedTime = format(new Date(props.eventDate), "HH':'mm");
 </script>
 
 <template>
-  <el-card>
+  <el-card
+    @click="onCardClick"
+    :shadow="cardShadow ?? 'always'"
+    :body-style="
+      truncateDescription && isDescriptionTruncated
+        ? { cursor: 'pointer' }
+        : undefined
+    "
+  >
     <div class="title_block">
       <span class="title">{{ name }}</span>
     </div>
-    <div class="v-align subtitle_block">
-      <div class="v-align">
+    <div class="al-it-cen subtitle_block">
+      <div class="al-it-cen">
         <el-icon class="el-icon--left">
           <Icon />
         </el-icon>
@@ -73,21 +99,20 @@ const formattedTime = format(new Date(props.eventDate), "HH':'mm");
       >
     </div>
     <div class="body_block">
-      <span
-        >{{ COUNTRY_CURRENCY_MAP[store.chosenCity.country] || '' }}
-        {{ price }}</span
-      >
+      <PriceBlock :price="price" />
     </div>
-    <div class="body_block" v-if="description">
-      <span class="description" ref="descriptionRef">{{ description }}</span>
+    <div class="body_block" v-if="description || isOnlyEvent">
+      <span
+        :class="truncateDescription ? 'truncate-4-lines' : ''"
+        ref="descriptionRef"
+        >{{ description }}
+        {{ !description && isOnlyEvent ? 'Без описания.' : '' }}</span
+      >
     </div>
   </el-card>
 </template>
 
 <style scoped lang="scss">
-@use 'sass:color';
-@use '../../styles/element/index.scss' as *;
-
 .subtitle_block {
   justify-content: space-between;
 }
@@ -97,7 +122,8 @@ const formattedTime = format(new Date(props.eventDate), "HH':'mm");
 .body_block {
   margin-top: 10px;
 }
-.description {
+
+.truncate-4-lines {
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
