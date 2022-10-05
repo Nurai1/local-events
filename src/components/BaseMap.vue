@@ -180,75 +180,6 @@ watch([map, eventsByPlaces], () => {
         pointLngLat: [place.long, place.lat],
         placeName: place.name,
       });
-      // const eventsInPlace = eventsByPlaces.value?.[place.id] ?? [];
-      // const firstEvent = eventsInPlace[0];
-      // if (firstEvent) {
-      //   const filterValue = store.standardFilters.find(
-      //     (filter) => filter.id === firstEvent.type
-      //   ).value;
-      //   const formattedDate = format(new Date(firstEvent.eventDate), 'do MMMM');
-      //   const formattedTime = format(new Date(firstEvent.eventDate), "HH':'mm");
-      //   const stringifiedEventsInPlace = JSON.stringify(
-      //     eventsInPlace
-      //   ).replaceAll('"', "'");
-      //   const stringifiedFirstEvent = JSON.stringify(firstEvent)
-      //     .replaceAll("'", '&rsquo;')
-      //     .replaceAll('"', "'");
-
-      //   const priceText = firstEvent.price
-      //     ? (COUNTRY_CURRENCY_MAP[chosenCity.value.country] || '') +
-      //       firstEvent.price
-      //     : 'Бесплатно';
-      //   const popUpHtml = `
-      //               <div>
-      //               <span class="title truncate-1-lines">${place.name}</span>
-      //               <div style="width: 100%; height: 1px; background: black;"></div>
-      //               <div class="event_info" onclick="
-      //                         window.$piniaInstance.setEventInfoPopupVisibility(true);
-      //                         window.$piniaInstance.setChosenEvent(${stringifiedFirstEvent});
-      //                       ">
-      //                 <div class="flx event_title">
-      //                   <span class="m-text m-title truncate-2-lines" style="min-width: fit-content; text-align: left;">
-      //                     ${firstEvent.name}
-      //                   </span>
-      //                   <div style="width: 100%; text-align: left;">
-      //                     <span class="m-text m-subtitle" style="min-width: fit-content;">
-      //                       ${filterValue} / ${priceText}
-      //                     </span>
-      //                   </div>
-      //                   <span class="m-text m-subtitle" style="min-width: fit-content;">
-      //                     ${formattedDate}, ${formattedTime}
-      //                   </span>
-      //                 </div>
-      //               </div>
-      //                 ${
-      //                   eventsInPlace.length > 1
-      //                     ? `
-      //                       <div class="background_gray" style="width: 100%; height: 1px; margin-top: 10px;"></div>
-      //                       <button class="marker_events_btn" onclick="
-      //                         window.$piniaInstance.setEventsPopupVisibility(true);
-      //                         window.$piniaInstance.setEventsByPoint(${stringifiedEventsInPlace});
-      //                       ">All place's events</button>
-      //                   `
-      //                     : ''
-      //                 }
-      //                 </div>
-      //               `;
-
-      //   new mapboxgl.Marker({
-      //     color: '#3d5a80',
-      //   })
-      //     .setLngLat([place.long, place.lat])
-      //     .setPopup(
-      //       new mapboxgl.Popup({
-      //         focusAfterOpen: false,
-      //         closeButton: false,
-      //       })
-      //         .setHTML(popUpHtml)
-      //         .addClassName('events_popup')
-      //     )
-      //     .addTo(map.value);
-      // }
     });
 });
 
@@ -266,73 +197,11 @@ const eventsByCoords = computed(() => {
 watch([map, eventsByCoords], () => {
   map.value &&
     Object.keys(eventsByCoords.value)?.forEach((coordinate) => {
-      const eventsInCoordinate = eventsByCoords.value?.[coordinate] ?? [];
-      const firstEvent = eventsInCoordinate[0];
-      if (firstEvent) {
-        const filterValue = store.standardFilters.find(
-          (filter) => filter.id === firstEvent.type
-        ).value;
-        const formattedDate = format(new Date(firstEvent.eventDate), 'do MMMM');
-        const formattedTime = format(new Date(firstEvent.eventDate), "HH':'mm");
-        const stringifiedEventsInCoord = JSON.stringify(
-          eventsInCoordinate
-        ).replaceAll('"', "'");
-        const stringifiedFirstEvent = JSON.stringify(firstEvent)
-          .replaceAll("'", '&rsquo;')
-          .replaceAll('"', "'");
-
-        const priceText = firstEvent.price
-          ? (COUNTRY_CURRENCY_MAP[chosenCity.value.country] || '') +
-            firstEvent.price
-          : 'Бесплатно';
-        const popUpHtml = `
-                    <div>
-                    <div class="event_info" onclick="
-                              window.$piniaInstance.setEventInfoPopupVisibility(true);
-                              window.$piniaInstance.setChosenEvent(${stringifiedFirstEvent});
-                            ">
-                      <div class="flx event_title">
-                        <span class="m-text m-title truncate-2-lines" style="min-width: fit-content; text-align: left;">
-                          ${firstEvent.name}
-                        </span>
-                        <div style="width: 100%; text-align: left;">
-                          <span class="m-text m-subtitle" style="min-width: fit-content;">
-                            ${filterValue} / ${priceText}
-                          </span>
-                        </div>
-                        <span class="m-text m-subtitle" style="min-width: fit-content;">
-                          ${formattedDate}, ${formattedTime}
-                        </span>
-                      </div>
-                    </div>
-                      ${
-                        eventsInCoordinate.length > 1
-                          ? `
-                            <div class="background_gray" style="width: 100%; height: 1px; margin-top: 10px;"></div>
-                            <button class="marker_events_btn" onclick="
-                              window.$piniaInstance.setEventsPopupVisibility(true);
-                              window.$piniaInstance.setEventsByPoint(${stringifiedEventsInCoord});
-                            ">All place's events</button>
-                        `
-                          : ''
-                      }
-                      </div>
-                    `;
-
-        new mapboxgl.Marker({
-          color: '#3d5a80',
-        })
-          .setLngLat(coordinate.split(', ').reverse())
-          .setPopup(
-            new mapboxgl.Popup({
-              focusAfterOpen: false,
-              closeButton: false,
-            })
-              .setHTML(popUpHtml)
-              .addClassName('events_popup')
-          )
-          .addTo(map.value);
-      }
+      createMarker({
+        eventsByPoint: eventsByCoords,
+        pointKey: coordinate,
+        pointLngLat: coordinate.split(', ').reverse(),
+      });
     });
 });
 </script>
