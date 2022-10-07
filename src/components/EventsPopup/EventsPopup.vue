@@ -15,6 +15,7 @@ const {
   filteredEvents,
   chosenCity,
   eventsByPoint,
+  maxPriceFilter,
 } = storeToRefs(store);
 
 const onEventsPopupClose = () => {
@@ -33,7 +34,7 @@ const data = computed(() => {
       >
     </template>
     <template v-if="!eventsByPoint">
-      <h3>Filters</h3>
+      <div class="subtitle mb15">Категории</div>
       <template v-for="filter of standardFilters" :key="filter.id">
         <el-button
           :type="filter.isActive ? 'primary' : undefined"
@@ -43,8 +44,36 @@ const data = computed(() => {
             ><Close /></el-icon
         ></el-button>
       </template>
+      <div class="subtitle">Цена</div>
+      <el-slider
+        v-model="store.priceRange"
+        range
+        show-stops
+        :max="maxPriceFilter"
+      />
+      <div class="subtitle">Дата</div>
+      <div class="jus-con-sp-bet datePickerWrap">
+        <el-date-picker
+          class="events-popup-datepicker"
+          v-model="store.dateTimeRangeFilter[0]"
+          type="datetime"
+          placeholder="Дата начала"
+          value-format="x"
+          format="DD/MM/YY hh:mm"
+          :teleported="false"
+        />
+        <el-date-picker
+          class="events-popup-datepicker"
+          v-model="store.dateTimeRangeFilter[1]"
+          type="datetime"
+          placeholder="Дата окончания"
+          value-format="x"
+          format="DD/MM/YY hh:mm"
+          :teleported="false"
+        />
+      </div>
     </template>
-    <h3>Events</h3>
+    <!-- <h3>События</h3> -->
     <div class="events_container">
       <template v-for="event in data" :key="event.id">
         <CardComp v-bind="event" :truncateDescription="true" />
@@ -52,8 +81,20 @@ const data = computed(() => {
     </div>
   </PopupDrawer>
 </template>
-
+<style lang="scss">
+.el-date-editor--datetime.el-date-editor.el-input.events-popup-datepicker {
+  width: 48%;
+}
+</style>
 <style scoped lang="scss">
+.datePickerWrap {
+  margin: 10px 0 15px;
+}
+
+.mb15 {
+  margin: 0 0 15px;
+}
+
 .events_container {
   & > * {
     margin-bottom: 15px;

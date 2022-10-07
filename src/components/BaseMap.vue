@@ -9,7 +9,7 @@ import { COUNTRY_CURRENCY_MAP } from '@/constants';
 
 const store = useMainStore();
 const {
-  activeFilters,
+  filteredEvents,
   filteredEventsWithPlace,
   filteredEventsWithCoords,
   places,
@@ -55,6 +55,7 @@ const createMarker = ({ eventsByPoint, pointKey, pointLngLat, placeName }) => {
                       }
                       <div class="event_info" onclick="
                                 window.$piniaInstance.setEventInfoPopupVisibility(true);
+                                window.$piniaInstance.setEventsPopupVisibility(false);
                                 window.$piniaInstance.setChosenEvent(${stringifiedFirstEvent});
                               ">
                         <div class="flx event_title">
@@ -77,8 +78,9 @@ const createMarker = ({ eventsByPoint, pointKey, pointLngLat, placeName }) => {
                             <div class="background_gray" style="width: 100%; height: 1px; margin-top: 10px;"></div>
                             <button class="marker_events_btn" onclick="
                               window.$piniaInstance.setEventsPopupVisibility(true);
+                              window.$piniaInstance.setEventInfoPopupVisibility(false);
                               window.$piniaInstance.setEventsByPoint(${stringifiedEventsInPlace});
-                            ">All place's events</button>
+                            ">Показать все</button>
                         `
                           : ''
                       }
@@ -122,7 +124,7 @@ onBeforeMount(async () => {
   cityInfo.center = body.features[0].center;
 });
 
-watch([cityInfo, activeFilters], () => {
+watch([cityInfo, filteredEvents], () => {
   mapboxgl.accessToken = process.env.VUE_APP_MAPBOX_ACCESS_KEY;
   map.value = new mapboxgl.Map({
     container: 'base_map', // container ID
@@ -211,8 +213,12 @@ watch([map, eventsByCoords], () => {
   <el-button
     type="primary"
     class="open_events_fixed_btn"
-    @click="store.setEventsPopupVisibility(true)"
-    >Open events and filters</el-button
+    @click="
+      store.setEventsPopupVisibility(true);
+      store.setEventInfoPopupVisibility(false);
+      store.setEventsByPoint(null);
+    "
+    >Список мероприятий</el-button
   >
 </template>
 

@@ -64,6 +64,11 @@ export default defineStore('main', () => {
     findedFilter.isActive = !findedFilter.isActive;
   }
 
+  const priceRange = ref(null);
+  function changePriceRange(range) {
+    priceRange.value = range;
+  }
+
   const places = ref([]);
   function setPlaces(value) {
     places.value = value;
@@ -77,13 +82,32 @@ export default defineStore('main', () => {
     events.value = value;
   }
 
+  const maxPriceFilter = computed(() => {
+    return events.value.reduce((acc, ev) => {
+      if (ev.price > acc) {
+        return ev.price;
+      }
+      return acc;
+    }, 0);
+  });
+
+  const dateTimeRangeFilter = reactive([]);
+
   const activeFilters = computed(() =>
     standardFilters.filter((fil) => fil.isActive).map((fil) => fil.id)
   );
 
   const filteredEvents = computed(() => {
-    return events.value.filter((event) =>
-      activeFilters.value.includes(event.type)
+    return events.value.filter(
+      (event) =>
+        activeFilters.value.includes(event.type) &&
+        (!priceRange.value ||
+          (event.price >= priceRange.value[0] &&
+            event.price <= priceRange.value[1])) &&
+        (!dateTimeRangeFilter[0] ||
+          new Date(event.eventDate).getTime() >= dateTimeRangeFilter[0]) &&
+        (!dateTimeRangeFilter[1] ||
+          new Date(event.eventDate).getTime() <= dateTimeRangeFilter[1])
     );
   });
 
@@ -115,6 +139,8 @@ export default defineStore('main', () => {
     setEventInfoPopupVisibility,
     standardFilters,
     changeFilterIsActive,
+    priceRange,
+    changePriceRange,
     places,
     setPlaces,
     eventsWithPlace,
@@ -127,5 +153,7 @@ export default defineStore('main', () => {
     setChosenEvent,
     eventsByPoint,
     setEventsByPoint,
+    maxPriceFilter,
+    dateTimeRangeFilter,
   };
 });
