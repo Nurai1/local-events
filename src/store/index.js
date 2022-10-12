@@ -3,9 +3,14 @@ import { ref, reactive, computed } from 'vue';
 import { useLocalStorage, StorageSerializers } from '@vueuse/core';
 
 export default defineStore('main', () => {
-  const chosenCity = useLocalStorage('chosenCity', null, {
-    serializer: StorageSerializers.object,
-  });
+  const chosenCity = useLocalStorage(
+    'chosenCity',
+    // убрать на null когда расширится список городов
+    { value: 'Тбилиси', country: 'Грузия' },
+    {
+      serializer: StorageSerializers.object,
+    }
+  );
   function setChosenCity(value) {
     chosenCity.value = value;
   }
@@ -20,47 +25,15 @@ export default defineStore('main', () => {
     eventInfoPopupVisibility.value = value;
   }
 
-  const standardFilters = reactive([
-    {
-      id: 'lectures',
-      value: 'Лекции',
-      color: '#D4E09B',
-      isActive: true,
-    },
-    {
-      id: 'shows',
-      value: 'Представления',
-      color: '#E5EAB7',
-      isActive: true,
-    },
-    {
-      id: 'parties',
-      value: 'Вечеринки',
-      color: '#F6F4D2',
-      isActive: true,
-    },
-    {
-      id: 'trips',
-      value: 'Путешествия',
-      color: '#CBDFBD',
-      isActive: true,
-    },
-    {
-      id: 'custom',
-      value: 'Добавленные',
-      color: '#DEBE9B',
-      isActive: true,
-    },
-    {
-      id: 'exhibitions',
-      value: 'Выставки',
-      color: '#F19C79',
-      isActive: true,
-    },
-  ]);
+  const eventsCategories = ref([]);
+  function setEventsCategories(val) {
+    eventsCategories.value = val;
+  }
 
   function changeFilterIsActive(id) {
-    const findedFilter = standardFilters.find((sFilter) => sFilter.id === id);
+    const findedFilter = eventsCategories.value.find(
+      (sFilter) => sFilter.id === id
+    );
     findedFilter.isActive = !findedFilter.isActive;
   }
 
@@ -94,13 +67,17 @@ export default defineStore('main', () => {
   const dateTimeRangeFilter = reactive([]);
 
   const activeFilters = computed(() =>
-    standardFilters.filter((fil) => fil.isActive).map((fil) => fil.id)
+    eventsCategories.value.filter((fil) => fil.isActive).map((fil) => fil.value)
   );
 
   const filteredEvents = computed(() => {
     return events.value.filter(
       (event) =>
-        activeFilters.value.includes(event.type) &&
+        activeFilters.value.some((filterName) =>
+          event.categories.items.some(
+            (eventCategory) => eventCategory.value === filterName
+          )
+        ) &&
         (!priceRange.value ||
           (event.price >= priceRange.value[0] &&
             event.price <= priceRange.value[1])) &&
@@ -137,7 +114,8 @@ export default defineStore('main', () => {
     setEventsPopupVisibility,
     eventInfoPopupVisibility,
     setEventInfoPopupVisibility,
-    standardFilters,
+    eventsCategories,
+    setEventsCategories,
     changeFilterIsActive,
     priceRange,
     changePriceRange,

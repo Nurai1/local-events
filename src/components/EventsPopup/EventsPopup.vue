@@ -11,7 +11,7 @@ const { changeFilterIsActive, setEventsPopupVisibility, setEventsByPoint } =
   store;
 const {
   eventsPopupVisibility,
-  standardFilters,
+  eventsCategories,
   filteredEvents,
   chosenCity,
   eventsByPoint,
@@ -35,7 +35,7 @@ const data = computed(() => {
     </template>
     <template v-if="!eventsByPoint">
       <div class="subtitle mb15">Категории</div>
-      <template v-for="filter of standardFilters" :key="filter.id">
+      <template v-for="filter of eventsCategories" :key="filter.id">
         <el-button
           :type="filter.isActive ? 'primary' : undefined"
           @click="changeFilterIsActive(filter.id)"

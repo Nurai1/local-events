@@ -8,10 +8,14 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.0",
     "@element-plus/icons-vue": "^2.0.9",
+    "@vue/apollo-composable": "^4.0.0-beta.1",
     "core-js": "^3.8.3",
     "date-fns": "^2.29.2",
     "element-plus": "^2.2.16",
+    "graphql": "^16.6.0",
+    "graphql-tag": "^2.12.6",
     "lodash.omit": "^4.5.0",
     "mapbox-gl": "^2.10.0",
     "pinia": "^2.0.22",

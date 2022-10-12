@@ -1,10 +1,11 @@
 <script setup>
 import { ref, watch, computed, onBeforeMount, reactive } from 'vue';
+import { useQuery } from '@vue/apollo-composable';
+import gql from 'graphql-tag';
 import mapboxgl from 'mapbox-gl';
 import { storeToRefs } from 'pinia';
 import { format } from 'date-fns';
 import useMainStore from '@/store';
-import api from '@/api/mock';
 import { COUNTRY_CURRENCY_MAP } from '@/constants';
 
 const store = useMainStore();
@@ -22,13 +23,88 @@ const cityInfo = reactive({
   center: undefined,
 });
 
+const { result: cityPlacesResult } = useQuery(
+  gql`
+    query CityPlacesListQuery($value: String!) {
+      city(value: $value) {
+        places {
+          items {
+            id
+            name
+            coordinates {
+              coordinates
+            }
+          }
+        }
+      }
+    }
+  `,
+  {
+    value: chosenCity.value.value,
+  }
+);
+
+watch(cityPlacesResult, (cityPlacesResultVal) => {
+  const places = cityPlacesResultVal?.city?.places?.items;
+  places && store.setPlaces(places);
+});
+
+const { result: cityEventsResult } = useQuery(
+  gql`
+    query CityEventsListQuery($value: String!) {
+      city(value: $value) {
+        id
+        events {
+          items {
+            id
+            price
+            name
+            eventDate
+            description
+            coordinates {
+              coordinates
+            }
+            place {
+              id
+              coordinates {
+                coordinates
+              }
+            }
+            categories {
+              items {
+                id
+                label
+                value
+              }
+            }
+          }
+        }
+      }
+    }
+  `,
+  {
+    value: chosenCity.value.value,
+  }
+);
+
+watch(cityEventsResult, (cityEventsResultVal) => {
+  const events = cityEventsResultVal?.city?.events?.items;
+  events && store.setEvents(events);
+});
+
 const createMarker = ({ eventsByPoint, pointKey, pointLngLat, placeName }) => {
   const eventsInPlace = eventsByPoint.value?.[pointKey] ?? [];
   const firstEvent = eventsInPlace[0];
   if (firstEvent) {
-    const filterValue = store.standardFilters.find(
-      (filter) => filter.id === firstEvent.type
-    ).value;
+    const filtersLabel = firstEvent.categories.items.reduce(
+      (acc, category, idx) => {
+        if (idx === 0) {
+          return `${category.label}`;
+        }
+        return `${acc} / ${category.label}`;
+      },
+      ''
+    );
     const formattedDate = format(new Date(firstEvent.eventDate), 'do MMMM');
     const formattedTime = format(new Date(firstEvent.eventDate), "HH':'mm");
     const stringifiedEventsInPlace = JSON.stringify(eventsInPlace).replaceAll(
@@ -64,7 +140,7 @@ const createMarker = ({ eventsByPoint, pointKey, pointLngLat, placeName }) => {
                           </span>
                           <div style="width: 100%; text-align: left;">
                             <span class="m-text m-subtitle" style="min-width: fit-content;">
-                              ${filterValue} / ${priceText}
+                              ${filtersLabel} / ${priceText}
                             </span>
                           </div>
                           <span class="m-text m-subtitle" style="min-width: fit-content;">
@@ -146,19 +222,6 @@ watch([cityInfo, filteredEvents], () => {
   );
 });
 
-const getPlacesByCityAsync = async (city) => {
-  const response = await api.getPlacesByCity(city);
-  const result = await response.json();
-  store.setPlaces(result);
-};
-getPlacesByCityAsync(chosenCity.value.value);
-const getEventsByCityAsync = async (city) => {
-  const response = await api.getEventsByCity(city);
-  const result = await response.json();
-  store.setEvents(result);
-};
-getEventsByCityAsync(chosenCity.value.value);
-
 const eventsByPlaces = computed(() => {
   const eventsData = filteredEventsWithPlace.value;
   return places.value.reduce((acc, val) => {
@@ -179,7 +242,7 @@ watch([map, eventsByPlaces], () => {
       createMarker({
         eventsByPoint: eventsByPlaces,
         pointKey: place.id,
-        pointLngLat: [place.long, place.lat],
+        pointLngLat: place.coordinates.coordinates,
         placeName: place.name,
       });
     });
@@ -187,10 +250,11 @@ watch([map, eventsByPlaces], () => {
 
 const eventsByCoords = computed(() => {
   return filteredEventsWithCoords.value.reduce((acc, event) => {
+    const coordinatesString = event.coordinates.coordinates.join(', ');
     return {
       ...acc,
-      [event.coordinates]: acc[event.coordinates]
-        ? [...acc[event.coordinates], event]
+      [coordinatesString]: acc[coordinatesString]
+        ? [...acc[coordinatesString], event]
         : [event],
     };
   }, {});
@@ -202,7 +266,7 @@ watch([map, eventsByCoords], () => {
       createMarker({
         eventsByPoint: eventsByCoords,
         pointKey: coordinate,
-        pointLngLat: coordinate.split(', ').reverse(),
+        pointLngLat: coordinate.split(', '),
       });
     });
 });

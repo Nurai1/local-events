@@ -1,12 +1,25 @@
 <script setup>
 import { useRouter } from 'vue-router';
-import { ref, watch } from 'vue';
-import api from '@/api/mock';
+import { computed, ref, watch } from 'vue';
+import { useQuery } from '@vue/apollo-composable';
+import gql from 'graphql-tag';
 import useMainStore from '@/store';
 
 const store = useMainStore();
 const router = useRouter();
-const cities = ref([]);
+
+const { result, loading } = useQuery(gql`
+  query CitiesListQuery {
+    citiesList {
+      items {
+        id
+        country
+        value
+      }
+    }
+  }
+`);
+const cities = computed(() => result.value?.citiesList?.items ?? []);
 const currentCity = ref('');
 
 watch(currentCity, () => {
@@ -17,17 +30,16 @@ watch(currentCity, () => {
   };
   store.setChosenCity(chosenCity);
 });
-
-const getCitiesAsync = async () => {
-  const response = await api.getCities();
-  cities.value = await response.json();
-};
-getCitiesAsync();
 </script>
 
 <template>
   <el-row class="container" justify="center">
     <el-select v-model="currentCity" placeholder="Choose your city">
+      <template #empty
+        ><p class="el-select-dropdown__empty">
+          {{ loading && !cities.length ? 'Loading...' : 'No data' }}
+        </p>
+      </template>
       <el-option v-for="city in cities" :key="city.id" :value="city.value">{{
         city.value
       }}</el-option>
@@ -42,6 +54,11 @@ getCitiesAsync();
 
 <style scoped lang="scss">
 @use '../styles/element/index.scss' as *;
+
+.select_empty {
+  padding: 5px;
+  font-size: 14px;
+}
 
 .container {
   padding-left: 10px;

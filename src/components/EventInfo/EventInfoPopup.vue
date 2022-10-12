@@ -1,5 +1,4 @@
 <script setup>
-// import { onMounted, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import useMainStore from '@/store';
 import PopupDrawer from '@/ui/PopupDrawer.vue';

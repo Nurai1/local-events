@@ -1,15 +1,12 @@
 <script setup>
 import { ref, watch } from 'vue';
-import { Tools as ToolsIcon } from '@element-plus/icons-vue';
 import { format } from 'date-fns';
 import omit from 'lodash/omit';
-import {
-  BookIcon,
-  BusIcon,
-  PaletteIcon,
-  ChampagneGlassesIcon,
-  WandMagicIcon,
-} from '../icons';
+import BusIcon from '@/assets/BusSolid.svg';
+import BookIcon from '@/assets/BookSolid.svg';
+import PaletteIcon from '@/assets/JustPalette.svg';
+import ChampagneGlassesIcon from '@/assets/ChampagneGlasses.svg';
+import WandMagicIcon from '@/assets/WandMagic.svg';
 import useMainStore from '@/store';
 import PriceBlock from '@/ui/PriceBlock.vue';
 
@@ -23,13 +20,13 @@ const props = defineProps({
     required: true,
     type: String,
   },
-  type: {
+  categories: {
     required: true,
-    type: String,
+    type: Object,
   },
   price: Number,
   eventDate: String,
-  place: String,
+  place: Object,
   description: String,
   truncateDescription: Boolean,
   cardShadow: String,
@@ -61,17 +58,17 @@ const filterToIconMap = {
   shows: WandMagicIcon,
   parties: ChampagneGlassesIcon,
   trips: BusIcon,
-  custom: ToolsIcon,
   exhibitions: PaletteIcon,
 };
 
-const Icon = filterToIconMap[props.type];
-const filterValue = store.standardFilters.find(
-  (filter) => filter.id === props.type
-).value;
-
 const formattedDate = format(new Date(props.eventDate), 'do MMMM');
 const formattedTime = format(new Date(props.eventDate), "HH':'mm");
+const categories = {
+  items: [
+    { value: 'shows', label: 'Выступления' },
+    { value: 'trips', label: 'Путешествия' },
+  ],
+};
 </script>
 
 <template>
@@ -88,11 +85,17 @@ const formattedTime = format(new Date(props.eventDate), "HH':'mm");
       <span class="title">{{ name }}</span>
     </div>
     <div class="al-it-cen subtitle_block">
-      <div class="al-it-cen">
-        <el-icon class="el-icon--left">
-          <Icon />
-        </el-icon>
-        <span class="subtitle">{{ filterValue }}</span>
+      <div class="al-it-cen flx-dir-col">
+        <div
+          class="flx"
+          v-for="category in categories.items"
+          :key="category.id"
+        >
+          <el-icon class="el-icon--left">
+            <img :src="filterToIconMap[category.value]" />
+          </el-icon>
+          <span class="subtitle">{{ category.label }}</span>
+        </div>
       </div>
       <span class="subtitle subtitle_date"
         >{{ formattedTime }}, {{ formattedDate }}</span
@@ -113,8 +116,14 @@ const formattedTime = format(new Date(props.eventDate), "HH':'mm");
 </template>
 
 <style scoped lang="scss">
+.subtitle_date {
+  text-align: right;
+}
 .subtitle_block {
   justify-content: space-between;
+}
+.categories {
+  flex-direction: column;
 }
 .el-card {
   text-align: left;
