@@ -226,7 +226,7 @@ const eventsByPlaces = computed(() => {
   const eventsData = filteredEventsWithPlace.value;
   return places.value.reduce((acc, val) => {
     const thisPlaceEvents = eventsData.filter(
-      (event) => event.place === val.id
+      (event) => event.place.id === val.id
     );
     return {
       ...acc,

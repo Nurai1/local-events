@@ -35,15 +35,17 @@ const data = computed(() => {
     </template>
     <template v-if="!eventsByPoint">
       <div class="subtitle mb15">Категории</div>
-      <template v-for="filter of eventsCategories" :key="filter.id">
-        <el-button
-          :type="filter.isActive ? 'primary' : undefined"
-          @click="changeFilterIsActive(filter.id)"
-          >{{ filter.value }}
-          <el-icon v-if="filter.isActive" class="el-icon--right"
-            ><Close /></el-icon
-        ></el-button>
-      </template>
+      <div class="flx-wrap jus-con-start">
+        <template v-for="filter of eventsCategories" :key="filter.id">
+          <el-button
+            :type="filter.isActive ? 'primary' : undefined"
+            @click="changeFilterIsActive(filter.id)"
+            >{{ filter.label }}
+            <el-icon v-if="filter.isActive" class="el-icon--right"
+              ><Close /></el-icon
+          ></el-button>
+        </template>
+      </div>
       <div class="subtitle">Цена</div>
       <el-slider
         v-model="store.priceRange"
@@ -57,7 +59,7 @@ const data = computed(() => {
           class="events-popup-datepicker"
           v-model="store.dateTimeRangeFilter[0]"
           type="datetime"
-          placeholder="Дата начала"
+          placeholder="Дата от"
           value-format="x"
           format="DD/MM/YY hh:mm"
           :teleported="false"
@@ -66,7 +68,7 @@ const data = computed(() => {
           class="events-popup-datepicker"
           v-model="store.dateTimeRangeFilter[1]"
           type="datetime"
-          placeholder="Дата окончания"
+          placeholder="Дата до"
           value-format="x"
           format="DD/MM/YY hh:mm"
           :teleported="false"
@@ -84,6 +86,14 @@ const data = computed(() => {
 <style lang="scss">
 .el-date-editor--datetime.el-date-editor.el-input.events-popup-datepicker {
   width: 48%;
+}
+
+.el-button + .el-button {
+  margin-left: 0;
+}
+
+.el-button {
+  margin-right: 12px;
 }
 </style>
 <style scoped lang="scss">

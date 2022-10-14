@@ -103,6 +103,16 @@ nav a.router-link-exact-active {
   flex-direction: column;
 }
 
+.flx-wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.jus-con-start {
+  display: flex;
+  justify-content: flex-start;
+}
+
 .flx {
   display: flex;
 }

@@ -7,6 +7,8 @@ import BookIcon from '@/assets/BookSolid.svg';
 import PaletteIcon from '@/assets/JustPalette.svg';
 import ChampagneGlassesIcon from '@/assets/ChampagneGlasses.svg';
 import WandMagicIcon from '@/assets/WandMagic.svg';
+import StoreIcon from '@/assets/store-solid.svg';
+import PeopleGroupIcon from '@/assets/people-group-solid.svg';
 import useMainStore from '@/store';
 import PriceBlock from '@/ui/PriceBlock.vue';
 
@@ -59,16 +61,12 @@ const filterToIconMap = {
   parties: ChampagneGlassesIcon,
   trips: BusIcon,
   exhibitions: PaletteIcon,
+  market: StoreIcon,
+  meets: PeopleGroupIcon,
 };
 
 const formattedDate = format(new Date(props.eventDate), 'do MMMM');
 const formattedTime = format(new Date(props.eventDate), "HH':'mm");
-const categories = {
-  items: [
-    { value: 'shows', label: 'Выступления' },
-    { value: 'trips', label: 'Путешествия' },
-  ],
-};
 </script>
 
 <template>
@@ -85,7 +83,7 @@ const categories = {
       <span class="title">{{ name }}</span>
     </div>
     <div class="al-it-cen subtitle_block">
-      <div class="al-it-cen flx-dir-col">
+      <div class="flx-dir-col">
         <div
           class="flx"
           v-for="category in categories.items"
@@ -106,11 +104,13 @@ const categories = {
     </div>
     <div class="body_block" v-if="description || isOnlyEvent">
       <span
-        :class="truncateDescription ? 'truncate-4-lines' : ''"
+        :class="
+          truncateDescription ? 'truncate-4-lines description' : 'description'
+        "
         ref="descriptionRef"
-        >{{ description }}
-        {{ !description && isOnlyEvent ? 'Без описания.' : '' }}</span
+        >{{ description }}</span
       >
+      {{ !description && isOnlyEvent ? 'Без описания.' : '' }}
     </div>
   </el-card>
 </template>
@@ -131,7 +131,9 @@ const categories = {
 .body_block {
   margin-top: 10px;
 }
-
+.description {
+  white-space: pre-wrap;
+}
 .truncate-4-lines {
   overflow: hidden;
   display: -webkit-box;

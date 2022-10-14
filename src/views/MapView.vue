@@ -4,7 +4,6 @@ import EventsPopup from '@/components/EventsPopup/EventsPopup.vue';
 import PopupDrawer from '@/ui/PopupDrawer.vue';
 import useMainStore from '@/store';
 import { storeToRefs } from 'pinia';
-import { watch } from 'vue';
 
 const store = useMainStore();
 const { setEventInfoPopupVisibility } = store;
@@ -12,9 +11,6 @@ const { chosenEvent, eventInfoPopupVisibility } = storeToRefs(store);
 const onEventInfoPopupClose = () => {
   setEventInfoPopupVisibility(false);
 };
-watch(chosenEvent, () => {
-  console.log('chosenEvent', chosenEvent.value);
-});
 </script>
 
 <template>
