@@ -85,12 +85,25 @@ nav a.router-link-exact-active {
 }
 
 .info-color {
-  color: $color-info;
+  color: $color-info !important;
+}
+
+.primary-color {
+  color: $color-primary !important;
+}
+
+.italic {
+  font-style: italic !important;
 }
 
 .al-it-cen {
   display: flex;
   align-items: center;
+}
+
+.al-it-cen {
+  display: flex;
+  align-items: flex-start;
 }
 
 .jus-con-sp-bet {

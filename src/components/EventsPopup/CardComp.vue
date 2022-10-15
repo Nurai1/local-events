@@ -83,14 +83,14 @@ const formattedTime = format(new Date(props.eventDate), "HH':'mm");
       <span class="title">{{ name }}</span>
     </div>
     <div class="al-it-cen subtitle_block">
-      <div class="flx-dir-col">
+      <div class="flx-dir-col al-it-start">
         <div
           class="flx"
           v-for="category in categories.items"
           :key="category.id"
         >
           <el-icon class="el-icon--left">
-            <img :src="filterToIconMap[category.value]" />
+            <img :src="filterToIconMap[category.value]" class="category_icon" />
           </el-icon>
           <span class="subtitle">{{ category.label }}</span>
         </div>
@@ -133,6 +133,10 @@ const formattedTime = format(new Date(props.eventDate), "HH':'mm");
 }
 .description {
   white-space: pre-wrap;
+}
+.category_icon {
+  width: 16px;
+  height: 16px;
 }
 .truncate-4-lines {
   overflow: hidden;

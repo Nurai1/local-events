@@ -61,6 +61,7 @@ const { result: cityEventsResult } = useQuery(
             name
             eventDate
             description
+            isAddressAccurate
             coordinates {
               coordinates
             }
@@ -146,6 +147,15 @@ const createMarker = ({ eventsByPoint, pointKey, pointLngLat, placeName }) => {
                           <span class="m-text m-subtitle" style="min-width: fit-content;">
                             ${formattedDate}, ${formattedTime}
                           </span>
+                          ${
+                            !firstEvent.isAddressAccurate
+                              ? `
+                              <span class="italic primary-color m-text m-subtitle" style="min-width: fit-content;">
+                              Неточный адрес.
+                              </span>
+                            `
+                              : ''
+                          }
                         </div>
                       </div>
                       ${
