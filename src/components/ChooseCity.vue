@@ -15,6 +15,7 @@ const { result, loading } = useQuery(gql`
         id
         country
         value
+        yandexCode
       }
     }
   }
@@ -27,6 +28,8 @@ watch(currentCity, () => {
     value: currentCity.value,
     country: cities.value.find((city) => city.value === currentCity.value)
       .country,
+    yandexCode: cities.value.find((city) => city.value === currentCity.value)
+      .yandexCode,
   };
   store.setChosenCity(chosenCity);
 });

@@ -67,7 +67,7 @@ export const eventsTbilisi = [
   },
   {
     id: getUid(),
-    isAccurateAddress: false,
+    isAddressAccurate: false,
     coordinates: '41.684524, 44.838258',
     name: 'КУЛИНАРНЫЙ КЛАСС КИТАЙСКОЙ КУХНИ',
     eventDate: '2022-09-18T19:30:00',

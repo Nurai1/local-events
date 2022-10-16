@@ -8,17 +8,12 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     BaseMap: typeof import('./src/components/BaseMap.vue')['default']
-    BookSolid: typeof import('./src/components/icons/BookSolid.vue')['default']
-    BusSolid: typeof import('./src/components/icons/BusSolid.vue')['default']
     CardComp: typeof import('./src/components/EventsPopup/CardComp.vue')['default']
-    ChampagneGlasses: typeof import('./src/components/icons/ChampagneGlasses.vue')['default']
     ChooseCity: typeof import('./src/components/ChooseCity.vue')['default']
     EventInfoPopup: typeof import('./src/components/EventInfo/EventInfoPopup.vue')['default']
     EventsPopup: typeof import('./src/components/EventsPopup/EventsPopup.vue')['default']
     HeaderComp: typeof import('./src/components/HeaderComp.vue')['default']
-    JustPalette: typeof import('./src/components/icons/JustPalette.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    WandMagic: typeof import('./src/components/icons/WandMagic.vue')['default']
   }
 }

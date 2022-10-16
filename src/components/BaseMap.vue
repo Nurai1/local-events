@@ -150,7 +150,7 @@ const createMarker = ({ eventsByPoint, pointKey, pointLngLat, placeName }) => {
                           ${
                             !firstEvent.isAddressAccurate
                               ? `
-                              <span class="italic primary-color m-text m-subtitle" style="min-width: fit-content;">
+                              <span class="inaccurateAddress italic primary-color m-text m-subtitle" style="min-width: fit-content;">
                               Неточный адрес.
                               </span>
                             `
@@ -304,7 +304,7 @@ watch([map, eventsByCoords], () => {
 
 .open_events_fixed_btn {
   position: fixed;
-  bottom: 30px;
+  bottom: 5%;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
@@ -330,7 +330,7 @@ watch([map, eventsByCoords], () => {
 .events_popup {
   transform: translate(-50%, 0%) !important;
   top: auto;
-  bottom: 10%;
+  bottom: 12%;
   left: 50%;
 }
 
@@ -362,6 +362,11 @@ watch([map, eventsByCoords], () => {
   color: color.adjust($color-info, $lightness: -20%);
   display: inline-block;
   margin: 3.5px 0 0px;
+}
+
+.inaccurateAddress {
+  width: 100%;
+  text-align: left;
 }
 
 @mixin truncate-lines($amount) {

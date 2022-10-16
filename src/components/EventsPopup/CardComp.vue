@@ -9,6 +9,7 @@ import ChampagneGlassesIcon from '@/assets/ChampagneGlasses.svg';
 import WandMagicIcon from '@/assets/WandMagic.svg';
 import StoreIcon from '@/assets/store-solid.svg';
 import PeopleGroupIcon from '@/assets/people-group-solid.svg';
+import MasterClassIcon from '@/assets/person-chalkboard.svg';
 import useMainStore from '@/store';
 import PriceBlock from '@/ui/PriceBlock.vue';
 
@@ -55,7 +56,7 @@ const onCardClick = () => {
   }
 };
 
-const filterToIconMap = {
+const filterToIconSrcMap = {
   lectures: BookIcon,
   shows: WandMagicIcon,
   parties: ChampagneGlassesIcon,
@@ -63,6 +64,7 @@ const filterToIconMap = {
   exhibitions: PaletteIcon,
   market: StoreIcon,
   meets: PeopleGroupIcon,
+  masterClass: MasterClassIcon,
 };
 
 const formattedDate = format(new Date(props.eventDate), 'do MMMM');
@@ -90,7 +92,10 @@ const formattedTime = format(new Date(props.eventDate), "HH':'mm");
           :key="category.id"
         >
           <el-icon class="el-icon--left">
-            <img :src="filterToIconMap[category.value]" class="category_icon" />
+            <img
+              :src="filterToIconSrcMap[category.value]"
+              class="category_icon"
+            />
           </el-icon>
           <span class="subtitle">{{ category.label }}</span>
         </div>

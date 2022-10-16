@@ -10,17 +10,42 @@ const loader = ref();
 
 const store = useMainStore();
 const { setEventsCategories } = store;
-const { result: eventsCategoriesRes, loading } = useQuery(gql`
-  query EventsCategoriesQuery {
-    eventsCategoriesList {
-      items {
-        id
-        label
-        value
+const { result: eventsCategoriesRes, loading: eventsCategoriesLoading } =
+  useQuery(gql`
+    query EventsCategoriesQuery {
+      eventsCategoriesList {
+        items {
+          id
+          label
+          value
+        }
       }
     }
+  `);
+
+// updating local storage
+const { result: chosenCityFullRes, loading: chosenCityFullLoading } = useQuery(
+  gql`
+    query ChosenCityFullQuery($value: String!) {
+      city(value: $value) {
+        id
+        country
+        value
+        yandexCode
+      }
+    }
+  `,
+  {
+    value: store.chosenCity?.value,
+  },
+  {
+    skip: !store.chosenCity,
   }
-`);
+);
+
+watch(chosenCityFullRes, (chosenCityFullResVal) =>
+  store.setChosenCity(chosenCityFullResVal.city)
+);
 
 watch(eventsCategoriesRes, (eventsCategoriesResVal) => {
   const eventsCategories = eventsCategoriesResVal?.eventsCategoriesList?.items;
@@ -33,7 +58,7 @@ watch(eventsCategoriesRes, (eventsCategoriesResVal) => {
 });
 
 watchEffect(() => {
-  if (loading.value) {
+  if (eventsCategoriesLoading.value || chosenCityFullLoading.value) {
     loader.value = ElLoading.service({
       lock: true,
       text: 'Loading',

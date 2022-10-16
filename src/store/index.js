@@ -6,7 +6,7 @@ export default defineStore('main', () => {
   const chosenCity = useLocalStorage(
     'chosenCity',
     // убрать на null когда расширится список городов
-    { value: 'Тбилиси', country: 'Грузия' },
+    { value: 'Тбилиси' },
     {
       serializer: StorageSerializers.object,
     }

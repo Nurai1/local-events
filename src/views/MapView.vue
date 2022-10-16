@@ -1,28 +1,14 @@
 <script setup>
 import BaseMap from '@/components/BaseMap.vue';
 import EventsPopup from '@/components/EventsPopup/EventsPopup.vue';
-import PopupDrawer from '@/ui/PopupDrawer.vue';
-import useMainStore from '@/store';
-import { storeToRefs } from 'pinia';
-
-const store = useMainStore();
-const { setEventInfoPopupVisibility } = store;
-const { chosenEvent, eventInfoPopupVisibility } = storeToRefs(store);
-const onEventInfoPopupClose = () => {
-  setEventInfoPopupVisibility(false);
-};
+import EventInfoPopup from '@/components/EventInfo/EventInfoPopup.vue';
 </script>
 
 <template>
   <div class="map_container">
     <BaseMap />
     <EventsPopup />
-    <PopupDrawer
-      :isOpen="eventInfoPopupVisibility"
-      :onClose="onEventInfoPopupClose"
-    >
-      <CardComp v-bind="chosenEvent" :isOnlyEvent="true" cardShadow="never" />
-    </PopupDrawer>
+    <EventInfoPopup />
   </div>
 </template>
 
