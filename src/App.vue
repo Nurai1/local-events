@@ -126,7 +126,7 @@ nav a.router-link-exact-active {
   align-items: center;
 }
 
-.al-it-cen {
+.al-it-start {
   display: flex;
   align-items: flex-start;
 }
@@ -149,6 +149,11 @@ nav a.router-link-exact-active {
 .jus-con-start {
   display: flex;
   justify-content: flex-start;
+}
+
+.jus-con-end {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .flx {

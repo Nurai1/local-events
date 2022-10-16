@@ -78,7 +78,7 @@ const data = computed(() => {
     <!-- <h3>События</h3> -->
     <div class="events_container">
       <template v-for="event in data" :key="event.id">
-        <CardComp v-bind="event" :truncateDescription="true" />
+        <CardComp v-bind="event" :isBriefVersion="true" />
       </template>
     </div>
   </PopupDrawer>

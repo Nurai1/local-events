@@ -62,6 +62,7 @@ const { result: cityEventsResult } = useQuery(
             eventDate
             description
             isAddressAccurate
+            source
             coordinates {
               coordinates
             }

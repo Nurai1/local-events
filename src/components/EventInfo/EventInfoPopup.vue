@@ -18,6 +18,7 @@ const chosenEventLongLat = computed(() =>
     ? chosenEvent.value.place.coordinates.coordinates
     : chosenEvent.value.coordinates.coordinates
 );
+
 const hrefToMap = computed(
   () =>
     // TODO: Tbilisi while we have just one
@@ -37,7 +38,7 @@ const hrefToMap = computed(
     :isOpen="eventInfoPopupVisibility"
     :onClose="onEventInfoPopupClose"
   >
-    <CardComp v-bind="chosenEvent" :isOnlyEvent="true" cardShadow="never" />
+    <CardComp v-bind="chosenEvent" :isBriefVersion="false" cardShadow="never" />
     <div class="buttons_wrap">
       <el-button type="primary"
         ><a :href="hrefToMap"><img :src="mapLocationPath" class="btn_icon" /></a

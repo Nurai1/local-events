@@ -2,6 +2,7 @@
 import { ref, watch } from 'vue';
 import { format } from 'date-fns';
 import omit from 'lodash/omit';
+import { Link as LinkIcon } from '@element-plus/icons-vue';
 import BusIcon from '@/assets/BusSolid.svg';
 import BookIcon from '@/assets/BookSolid.svg';
 import PaletteIcon from '@/assets/JustPalette.svg';
@@ -27,13 +28,27 @@ const props = defineProps({
     required: true,
     type: Object,
   },
-  price: Number,
-  eventDate: String,
+  source: {
+    required: true,
+    type: String,
+  },
+  price: {
+    required: true,
+    type: Number,
+  },
+  eventDate: {
+    required: true,
+    type: String,
+  },
+  isAddressAccurate: {
+    required: true,
+    type: Boolean,
+  },
   place: Object,
+  coordinates: Object,
   description: String,
-  truncateDescription: Boolean,
+  isBriefVersion: Boolean,
   cardShadow: String,
-  isOnlyEvent: Boolean,
 });
 
 const descriptionRef = ref(null);
@@ -52,7 +67,7 @@ watch(descriptionRef, () => {
 const onCardClick = () => {
   if (isDescriptionTruncated.value) {
     store.setEventInfoPopupVisibility(true);
-    store.setChosenEvent(omit(props, ['truncateDescription', 'cardShadow']));
+    store.setChosenEvent(omit(props, ['isBriefVersion', 'cardShadow']));
   }
 };
 
@@ -75,12 +90,17 @@ const formattedTime = format(new Date(props.eventDate), "HH':'mm");
   <el-card
     @click="onCardClick"
     :shadow="cardShadow ?? 'always'"
-    :body-style="
-      truncateDescription && isDescriptionTruncated
-        ? { cursor: 'pointer' }
-        : undefined
-    "
+    :body-style="isBriefVersion ? { cursor: 'pointer' } : {}"
   >
+    <a
+      v-if="!isBriefVersion"
+      class="al-it-cen jus-con-end source_label"
+      :href="source"
+      target="_blank"
+    >
+      <span class="subtitle">Источник</span>
+      <el-icon class="info-color el-icon--right"><LinkIcon /></el-icon>
+    </a>
     <div class="title_block">
       <span class="title">{{ name }}</span>
     </div>
@@ -107,20 +127,22 @@ const formattedTime = format(new Date(props.eventDate), "HH':'mm");
     <div class="body_block">
       <PriceBlock :price="price" />
     </div>
-    <div class="body_block" v-if="description || isOnlyEvent">
+    <div class="body_block" v-if="description || !isBriefVersion">
       <span
-        :class="
-          truncateDescription ? 'truncate-4-lines description' : 'description'
-        "
+        :class="isBriefVersion ? 'truncate-4-lines description' : 'description'"
         ref="descriptionRef"
         >{{ description }}</span
       >
-      {{ !description && isOnlyEvent ? 'Без описания.' : '' }}
+      {{ !description && !isBriefVersion ? 'Без описания.' : '' }}
     </div>
   </el-card>
 </template>
 
 <style scoped lang="scss">
+.source_label {
+  position: relative;
+  top: -10px;
+}
 .subtitle_date {
   text-align: right;
 }
