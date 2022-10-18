@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunklocal_events"]=self["webpackChunklocal_events"]||[]).push([[443],{48:function(e,n,t){t.r(n),t.d(n,{default:function(){return o}});var r=t(3396);const a={class:"create-event"},c=(0,r._)("h1",null,"This is future page for creating an event",-1),s=[c];function u(e,n){return(0,r.wg)(),(0,r.iD)("div",a,s)}var l=t(89);const i={},f=(0,l.Z)(i,[["render",u]]);var o=f}}]);
+//# sourceMappingURL=about.6e465cb2.js.map

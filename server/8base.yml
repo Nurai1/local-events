@@ -1,0 +1,7 @@
+functions:
+  deleteOldEventsTask:
+    handler:
+      code: src/tasks/deleteOldEventsTask.js
+    type: task
+    schedule: 'rate(2 hours)'
+    description: Delete all passed events every 2 hours
