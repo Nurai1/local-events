@@ -174,15 +174,22 @@ watchEffect(() => {
 
 html,
 body {
+  letter-spacing: 1px;
   font-family: FuturaBookC, Helvetica, Arial, sans-serif;
   height: 100%;
   margin: 0;
+}
+
+.mapboxgl-map {
+  letter-spacing: 1px;
+  font-family: FuturaBookC, Helvetica, Arial, sans-serif;
 }
 
 button,
 input,
 select,
 textarea {
+  letter-spacing: inherit;
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
@@ -194,10 +201,6 @@ textarea {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   height: 100%;
-}
-
-.mapboxgl-map {
-  font-family: FuturaBookC, Helvetica, Arial, sans-serif;
 }
 
 a {
