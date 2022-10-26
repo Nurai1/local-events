@@ -3,8 +3,8 @@ import { COUNTRY_CURRENCY_MAP } from '@/constants';
 import useMainStore from '@/store';
 
 const props = defineProps({ price: Number });
-
 const store = useMainStore();
+
 const priceText = props.price
   ? (COUNTRY_CURRENCY_MAP[store.chosenCity.country] || '') + props.price
   : 'Бесплатно';

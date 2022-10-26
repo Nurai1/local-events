@@ -63,6 +63,10 @@ const { result: cityEventsResult } = useQuery(
             description
             isAddressAccurate
             source
+            image {
+              id
+              downloadUrl
+            }
             coordinates {
               coordinates
             }

@@ -1,5 +1,5 @@
 <script setup>
-import HeaderComp from './components/HeaderComp.vue';
+// import HeaderComp from './components/HeaderComp.vue';
 import { ref, watch, watchEffect } from 'vue';
 import { useQuery } from '@vue/apollo-composable';
 import gql from 'graphql-tag';
@@ -70,119 +70,25 @@ watchEffect(() => {
 });
 </script>
 <template>
-  <HeaderComp />
+  <!-- <HeaderComp /> -->
   <router-view />
 </template>
 <style lang="scss">
 @use './styles/element/index.scss' as *;
 
-@font-face {
-  font-family: 'FuturaDemiC';
-  src: url('./assets/fonts/Futura/FuturaDemiC.eot');
-  src: local('Futura Demi Cyrillic'), local('FuturaDemiC'),
-    url('./assets/fonts/Futura/FuturaDemiC.eot?#iefix')
-      format('embedded-opentype'),
-    url('./assets/fonts/Futura/FuturaDemiC.woff') format('woff'),
-    url('./assets/fonts/Futura/FuturaDemiC.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'FuturaMediumC';
-  src: url('./assets/fonts/Futura/FuturaMediumC.eot');
-  src: local('Futura Medium Cyrillic'), local('FuturaMediumC'),
-    url('./assets/fonts/Futura/FuturaMediumC.eot?#iefix')
-      format('embedded-opentype'),
-    url('./assets/fonts/Futura/FuturaMediumC.woff') format('woff'),
-    url('./assets/fonts/Futura/FuturaMediumC.ttf') format('truetype');
-  font-weight: 500;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'FuturaLightC';
-  src: url('./assets/fonts/Futura/FuturaLightC-Italic.eot');
-  src: local('Futura Light Italic Cyrillic'), local('FuturaLightC-Italic'),
-    url('./assets/fonts/Futura/FuturaLightC-Italic.eot?#iefix')
-      format('embedded-opentype'),
-    url('./assets/fonts/Futura/FuturaLightC-Italic.woff') format('woff'),
-    url('./assets/fonts/Futura/FuturaLightC-Italic.ttf') format('truetype');
-  font-weight: 300;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'FuturaMediumC';
-  src: url('./assets/fonts/Futura/FuturaMediumC-Italic.eot');
-  src: local('Futura Medium Italic Cyrillic'), local('FuturaMediumC-Italic'),
-    url('./assets/fonts/Futura/FuturaMediumC-Italic.eot?#iefix')
-      format('embedded-opentype'),
-    url('./assets/fonts/Futura/FuturaMediumC-Italic.woff') format('woff'),
-    url('./assets/fonts/Futura/FuturaMediumC-Italic.ttf') format('truetype');
-  font-weight: 500;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'FuturaLightC';
-  src: url('./assets/fonts/Futura/FuturaLightC.eot');
-  src: local('Futura Light Cyrillic'), local('FuturaLightC'),
-    url('./assets/fonts/Futura/FuturaLightC.eot?#iefix')
-      format('embedded-opentype'),
-    url('./assets/fonts/Futura/FuturaLightC.woff') format('woff'),
-    url('./assets/fonts/Futura/FuturaLightC.ttf') format('truetype');
-  font-weight: 300;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'FuturaDemiC';
-  src: url('./assets/fonts/Futura/FuturaDemiC-Italic.eot');
-  src: local('Futura Demi Italic Cyrillic'), local('FuturaDemiC-Italic'),
-    url('./assets/fonts/Futura/FuturaDemiC-Italic.eot?#iefix')
-      format('embedded-opentype'),
-    url('./assets/fonts/Futura/FuturaDemiC-Italic.woff') format('woff'),
-    url('./assets/fonts/Futura/FuturaDemiC-Italic.ttf') format('truetype');
-  font-weight: normal;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'FuturaBookC';
-  src: url('./assets/fonts/Futura/FuturaBookC-Italic.eot');
-  src: local('Futura Book Italic Cyrillic'), local('FuturaBookC-Italic'),
-    url('./assets/fonts/Futura/FuturaBookC-Italic.eot?#iefix')
-      format('embedded-opentype'),
-    url('./assets/fonts/Futura/FuturaBookC-Italic.woff') format('woff'),
-    url('./assets/fonts/Futura/FuturaBookC-Italic.ttf') format('truetype');
-  font-weight: normal;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'FuturaBookC';
-  src: url('./assets/fonts/Futura/FuturaBookC.eot');
-  src: local('Futura Book Cyrillic'), local('FuturaBookC'),
-    url('./assets/fonts/Futura/FuturaBookC.eot?#iefix')
-      format('embedded-opentype'),
-    url('./assets/fonts/Futura/FuturaBookC.woff') format('woff'),
-    url('./assets/fonts/Futura/FuturaBookC.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
 html,
 body {
-  letter-spacing: 1px;
-  font-family: FuturaBookC, Helvetica, Arial, sans-serif;
+  letter-spacing: 0.6px;
+  font-family: Helvetica, Arial, sans-serif;
   height: 100%;
   margin: 0;
+  line-height: 1.2;
 }
 
 .mapboxgl-map {
-  letter-spacing: 1px;
-  font-family: FuturaBookC, Helvetica, Arial, sans-serif;
+  letter-spacing: 0.6px;
+  font-family: Helvetica, Arial, sans-serif;
+  line-height: 1.2;
 }
 
 button,

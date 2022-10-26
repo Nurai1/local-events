@@ -44,6 +44,7 @@ const props = defineProps({
     required: true,
     type: Boolean,
   },
+  image: Object,
   place: Object,
   coordinates: Object,
   description: String,
@@ -101,6 +102,12 @@ const formattedTime = format(new Date(props.eventDate), "HH':'mm");
       <span class="subtitle">Источник</span>
       <el-icon class="info-color el-icon--right"><LinkIcon /></el-icon>
     </a>
+    <img
+      class="event_image"
+      v-if="image"
+      :src="image.downloadUrl"
+      alt="Event image"
+    />
     <div class="title_block">
       <span class="title">{{ name }}</span>
     </div>
@@ -164,6 +171,11 @@ const formattedTime = format(new Date(props.eventDate), "HH':'mm");
 .category_icon {
   width: 16px;
   height: 16px;
+}
+.event_image {
+  width: 100%;
+  height: 250px;
+  object-fit: contain;
 }
 .truncate-4-lines {
   overflow: hidden;

@@ -21,7 +21,6 @@ const chosenEventLongLat = computed(() =>
 
 const hrefToMap = computed(
   () =>
-    // TODO: Tbilisi while we have just one
     `https://yandex.com.ge/maps/${chosenCity.value.yandexCode}/${CITY_RU_TO_ENG[
       chosenCity.value.value
     ]?.toLowerCase()}/?ll=${chosenEventLongLat.value[0]}%2C${
@@ -37,6 +36,7 @@ const hrefToMap = computed(
   <PopupDrawer
     :isOpen="eventInfoPopupVisibility"
     :onClose="onEventInfoPopupClose"
+    :infoEventPopup="true"
   >
     <CardComp v-bind="chosenEvent" :isBriefVersion="false" cardShadow="never" />
     <div class="buttons_wrap">
@@ -47,17 +47,25 @@ const hrefToMap = computed(
   </PopupDrawer>
 </template>
 <style scoped lang="scss">
+@use '../../styles/constants.scss' as *;
+
 .el-button {
-  padding: 10px;
+  height: fit-content;
+  padding: 5px 10px;
+  margin-right: 0;
+  border-radius: 8px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
 }
 .buttons_wrap {
   position: absolute;
-  left: 50%;
+  right: calc(50% + $drawer-icon-width/2);
   bottom: 5%;
-  transform: translateX(-50%);
+  border-right: 1px solid #fff;
+  transform: translateX(50%);
 }
 .btn_icon {
-  width: 16px;
-  height: 16px;
+  width: 24px;
+  height: 24px;
 }
 </style>
