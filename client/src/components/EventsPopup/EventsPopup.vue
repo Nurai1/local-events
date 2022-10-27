@@ -61,7 +61,7 @@ const marks = computed(() => ({
         />
       </div>
       <div class="title-info">Дата</div>
-      <div class="jus-con-sp-bet datePickerWrap">
+      <div class="jus-con-sp-bet date-picker-wrapper">
         <DatePicker
           placeholder="Дата от"
           teleportCenter
@@ -70,15 +70,19 @@ const marks = computed(() => ({
           format="dd/MM/yyyy HH:mm"
           selectText="Выбрать"
           cancelText="Отмена"
+          hideInputIcon
+          inputClassName="dp-cus-input"
         ></DatePicker>
         <DatePicker
           placeholder="Дата до"
           teleportCenter
-          v-model="qwert"
+          v-model="store.dateTimeRangeFilter[1]"
           modelType="timestamp"
           format="dd/MM/yyyy HH:mm"
           selectText="Выбрать"
           cancelText="Отмена"
+          hideInputIcon
+          inputClassName="dp-cus-input"
         ></DatePicker>
       </div>
     </template>
@@ -97,6 +101,9 @@ const marks = computed(() => ({
   color: $color-primary;
 }
 
+.dp-cus-input {
+  padding-right: 30px;
+}
 .el-button + .el-button {
   margin-left: 0;
 }
@@ -106,7 +113,7 @@ const marks = computed(() => ({
 }
 </style>
 <style scoped lang="scss">
-.datePickerWrap {
+.date-picker-wrapper {
   margin: 10px 0 15px;
   & > * {
     width: 48%;

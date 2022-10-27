@@ -22,6 +22,7 @@ const cityInfo = reactive({
   maxBounds: undefined,
   center: undefined,
 });
+const markersIds = reactive([]);
 
 const { result: cityPlacesResult } = useQuery(
   gql`
@@ -178,7 +179,7 @@ const createMarker = ({ eventsByPoint, pointKey, pointLngLat, placeName }) => {
                       </div>
                     `;
 
-    new mapboxgl.Marker({
+    const markersId = new mapboxgl.Marker({
       color: '#3d5a80',
     })
       .setLngLat(pointLngLat)
@@ -191,6 +192,8 @@ const createMarker = ({ eventsByPoint, pointKey, pointLngLat, placeName }) => {
           .addClassName('events_popup')
       )
       .addTo(map.value);
+
+    markersIds.push(markersId);
   }
 };
 
@@ -215,7 +218,7 @@ onBeforeMount(async () => {
   cityInfo.center = body.features[0].center;
 });
 
-watch([cityInfo, filteredEvents], () => {
+watch([cityInfo], () => {
   mapboxgl.accessToken = process.env.VUE_APP_MAPBOX_ACCESS_KEY;
   map.value = new mapboxgl.Map({
     container: 'base_map', // container ID
@@ -235,6 +238,12 @@ watch([cityInfo, filteredEvents], () => {
       trackUserLocation: true,
     })
   );
+});
+
+watch([filteredEvents], () => {
+  markersIds.forEach((markersId) => {
+    markersId.remove();
+  });
 });
 
 const eventsByPlaces = computed(() => {
