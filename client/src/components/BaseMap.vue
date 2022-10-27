@@ -130,7 +130,7 @@ const createMarker = ({ eventsByPoint, pointKey, pointLngLat, placeName }) => {
                       ${
                         placeName
                           ? `
-                            <span class="title truncate-1-lines">${placeName}</span>
+                            <span class="megatitle truncate-1-lines">${placeName}</span>
                             <div style="width: 100%; height: 1px; background: black;"></div>
                           `
                           : ''

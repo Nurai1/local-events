@@ -118,9 +118,19 @@ nav a.router-link-exact-active {
   // color: $color-success;
 }
 
-.title {
+.megatitle {
   font-weight: 500;
   font-size: 18px;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.title-info {
+  @extend .title;
+  color: $color-info;
 }
 
 .subtitle {
@@ -141,6 +151,11 @@ nav a.router-link-exact-active {
 }
 
 .al-it-cen {
+  display: flex;
+  align-items: center;
+}
+
+.jus-con-cen {
   display: flex;
   align-items: center;
 }

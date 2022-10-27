@@ -1,6 +1,8 @@
 import { createApp, provide, h } from 'vue';
 import { DefaultApolloClient } from '@vue/apollo-composable';
 import ElementPlus from 'element-plus';
+import Datepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
 
 import './styles/element/index.scss';
 import pinia from '@/store/constructor';
@@ -16,4 +18,9 @@ const app = createApp({
   render: () => h(App),
 });
 
-app.use(pinia).use(router).use(ElementPlus).mount('#app');
+app
+  .component('DatePicker', Datepicker)
+  .use(pinia)
+  .use(router)
+  .use(ElementPlus)
+  .mount('#app');

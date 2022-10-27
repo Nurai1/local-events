@@ -25,6 +25,10 @@ const onEventsPopupClose = () => {
 const data = computed(() => {
   return !eventsByPoint.value ? filteredEvents.value : eventsByPoint.value;
 });
+const marks = computed(() => ({
+  0: '0',
+  [maxPriceFilter.value]: '' + maxPriceFilter.value,
+}));
 </script>
 <template>
   <PopupDrawer :isOpen="eventsPopupVisibility" :onClose="onEventsPopupClose">
@@ -34,7 +38,7 @@ const data = computed(() => {
       >
     </template>
     <template v-if="!eventsByPoint">
-      <div class="subtitle mb15">Категории</div>
+      <div class="title-info mb15">Категории</div>
       <div class="flx-wrap jus-con-start">
         <template v-for="filter of eventsCategories" :key="filter.id">
           <el-button
@@ -46,33 +50,36 @@ const data = computed(() => {
           ></el-button>
         </template>
       </div>
-      <div class="subtitle">Цена</div>
-      <el-slider
-        v-model="store.priceRange"
-        range
-        show-stops
-        :max="maxPriceFilter"
-      />
-      <div class="subtitle">Дата</div>
+      <div class="title-info">Цена</div>
+      <div class="slider-wrapper">
+        <el-slider
+          v-model="store.priceRange"
+          range
+          show-stops
+          :max="maxPriceFilter"
+          :marks="marks"
+        />
+      </div>
+      <div class="title-info">Дата</div>
       <div class="jus-con-sp-bet datePickerWrap">
-        <el-date-picker
-          class="events-popup-datepicker"
-          v-model="store.dateTimeRangeFilter[0]"
-          type="datetime"
+        <DatePicker
           placeholder="Дата от"
-          value-format="x"
-          format="DD/MM/YY hh:mm"
-          :teleported="false"
-        />
-        <el-date-picker
-          class="events-popup-datepicker"
-          v-model="store.dateTimeRangeFilter[1]"
-          type="datetime"
+          teleportCenter
+          v-model="store.dateTimeRangeFilter[0]"
+          modelType="timestamp"
+          format="dd/MM/yyyy HH:mm"
+          selectText="Выбрать"
+          cancelText="Отмена"
+        ></DatePicker>
+        <DatePicker
           placeholder="Дата до"
-          value-format="x"
-          format="DD/MM/YY hh:mm"
-          :teleported="false"
-        />
+          teleportCenter
+          v-model="qwert"
+          modelType="timestamp"
+          format="dd/MM/yyyy HH:mm"
+          selectText="Выбрать"
+          cancelText="Отмена"
+        ></DatePicker>
       </div>
     </template>
     <!-- <h3>События</h3> -->
@@ -84,8 +91,10 @@ const data = computed(() => {
   </PopupDrawer>
 </template>
 <style lang="scss">
-.el-date-editor--datetime.el-date-editor.el-input.events-popup-datepicker {
-  width: 48%;
+@use '../../styles/element/index.scss' as *;
+
+.dp__action_buttons > .dp__select {
+  color: $color-primary;
 }
 
 .el-button + .el-button {
@@ -99,6 +108,14 @@ const data = computed(() => {
 <style scoped lang="scss">
 .datePickerWrap {
   margin: 10px 0 15px;
+  & > * {
+    width: 48%;
+  }
+}
+
+.slider-wrapper {
+  width: 95%;
+  margin: 0 auto;
 }
 
 .mb15 {

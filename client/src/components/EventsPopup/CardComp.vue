@@ -109,7 +109,7 @@ const formattedTime = format(new Date(props.eventDate), "HH':'mm");
       alt="Event image"
     />
     <div class="title_block">
-      <span class="title">{{ name }}</span>
+      <span class="megatitle">{{ name }}</span>
     </div>
     <div class="al-it-cen subtitle_block">
       <div class="flx-dir-col al-it-start">
