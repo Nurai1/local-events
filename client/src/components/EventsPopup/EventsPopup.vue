@@ -34,7 +34,7 @@ const marks = computed(() => ({
   <PopupDrawer :isOpen="eventsPopupVisibility" :onClose="onEventsPopupClose">
     <template #header
       ><span class="header_city"
-        >{{ chosenCity.value }}, {{ chosenCity.country }}</span
+        >{{ chosenCity.value.value }}, {{ chosenCity.value.country }}</span
       >
     </template>
     <template v-if="!eventsByPoint">
@@ -95,10 +95,21 @@ const marks = computed(() => ({
   </PopupDrawer>
 </template>
 <style lang="scss">
+@use 'sass:color';
 @use '../../styles/element/index.scss' as *;
 
 .dp__action_buttons > .dp__select {
-  color: $color-primary;
+  color: color.adjust($color-primary, $lightness: 20%);
+}
+
+.dp__button {
+  background: color.adjust($color-primary, $lightness: 20%);
+  width: 80%;
+  border-radius: 10px;
+  margin: 0 auto;
+  & svg {
+    fill: white;
+  }
 }
 
 .dp-cus-input {
@@ -141,9 +152,5 @@ const marks = computed(() => ({
 button {
   margin-bottom: 10px;
   transition: transform 0.2s;
-  //   background: #f6f4d2;
-  &:hover {
-    transform: scale(1.1);
-  }
 }
 </style>

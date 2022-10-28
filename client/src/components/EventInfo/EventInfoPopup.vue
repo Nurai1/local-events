@@ -1,6 +1,6 @@
 <script setup>
 import { storeToRefs } from 'pinia';
-import { computed, watch } from 'vue';
+import { computed } from 'vue';
 import useMainStore from '@/store';
 import PopupDrawer from '@/ui/PopupDrawer.vue';
 import mapLocationPath from '@/assets/map-location.svg';
@@ -31,9 +31,6 @@ const hrefToMap = computed(
       chosenEvent.value.isAddressAccurate ? 15 : 13
     }`
 );
-watch(chosenEvent, () => {
-  console.log(chosenEvent);
-});
 </script>
 <template>
   <PopupDrawer

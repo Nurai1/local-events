@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-
+// TODO: all task
 const PassedEventsUpdateByFilterMutation = gql`
   mutation PassedEventsUpdateByFilterMutation($dateNow: DateTime!) {
     eventUpdateByFilter(
@@ -8,8 +8,6 @@ const PassedEventsUpdateByFilterMutation = gql`
     ) {
       items {
         id
-        eventDate
-        eventEndDate
       }
     }
   }

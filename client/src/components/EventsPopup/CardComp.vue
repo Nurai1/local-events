@@ -44,6 +44,10 @@ const props = defineProps({
     required: true,
     type: Boolean,
   },
+  withoutExactTime: {
+    required: true,
+    type: Boolean,
+  },
   image: Object,
   place: Object,
   coordinates: Object,
@@ -51,7 +55,6 @@ const props = defineProps({
   isBriefVersion: Boolean,
   cardShadow: String,
 });
-
 const descriptionRef = ref(null);
 const isDescriptionTruncated = ref(false);
 
@@ -95,8 +98,15 @@ const formattedTime = computed(() =>
   <el-card
     @click="onCardClick"
     :shadow="cardShadow ?? 'always'"
-    :body-style="isBriefVersion ? { cursor: 'pointer' } : {}"
+    :body-style="isBriefVersion ? { cursor: 'pointer' } : { padding: 0 }"
+    :class="!isBriefVersion ? 'card' : ''"
   >
+    <img
+      class="event_image"
+      v-if="image"
+      :src="image.downloadUrl"
+      alt="Event image"
+    />
     <a
       v-if="!isBriefVersion"
       class="al-it-cen jus-con-end source_label"
@@ -106,12 +116,6 @@ const formattedTime = computed(() =>
       <span class="subtitle">Источник</span>
       <el-icon class="info-color el-icon--right"><LinkIcon /></el-icon>
     </a>
-    <img
-      class="event_image"
-      v-if="image"
-      :src="image.downloadUrl"
-      alt="Event image"
-    />
     <div class="title_block">
       <span class="megatitle">{{ name }}</span>
     </div>
@@ -138,6 +142,20 @@ const formattedTime = computed(() =>
     <div class="body_block">
       <PriceBlock :price="price" />
     </div>
+    <span
+      v-if="!isAddressAccurate"
+      class="inaccurate-event-info italic primary-color m-text m-subtitle"
+      style="min-width: fit-content"
+    >
+      Неточный адрес.
+    </span>
+    <span
+      v-if="withoutExactTime"
+      class="inaccurate-event-info italic primary-color m-text m-subtitle"
+      style="min-width: fit-content"
+    >
+      Неточное время.
+    </span>
     <div class="body_block" v-if="description || !isBriefVersion">
       <span
         :class="isBriefVersion ? 'truncate-4-lines description' : 'description'"
@@ -152,7 +170,7 @@ const formattedTime = computed(() =>
 <style scoped lang="scss">
 .source_label {
   position: relative;
-  top: -10px;
+  margin: 10px 0;
 }
 .subtitle_date {
   text-align: right;
@@ -166,6 +184,10 @@ const formattedTime = computed(() =>
 .el-card {
   text-align: left;
 }
+.card {
+  border: 0;
+}
+
 .body_block {
   margin-top: 10px;
 }
@@ -179,6 +201,7 @@ const formattedTime = computed(() =>
 .event_image {
   width: 100%;
   object-fit: contain;
+  border-radius: 4px;
 }
 .truncate-4-lines {
   overflow: hidden;

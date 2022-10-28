@@ -10,7 +10,6 @@ import { COUNTRY_CURRENCY_MAP } from '@/constants';
 
 const store = useMainStore();
 const {
-  filteredEvents,
   filteredEventsWithPlace,
   filteredEventsWithCoords,
   places,
@@ -22,19 +21,8 @@ const cityInfo = reactive({
   maxBounds: undefined,
   center: undefined,
 });
-const markers = reactive([]);
-const readyForPlacesMarkersPainting = ref(true);
-const readyForCoordsMarkersPainting = ref(true);
-
-watch(filteredEvents, () => {
-  // TODO: add optimization to avoid delete if events length haven't changed
-  markers.forEach((marker) => {
-    marker.remove();
-  });
-  markers.length = 0;
-  readyForPlacesMarkersPainting.value = true;
-  readyForCoordsMarkersPainting.value = true;
-});
+const markersPlaces = reactive([]);
+const markersCoords = reactive([]);
 
 const { result: cityPlacesResult } = useQuery(
   gql`
@@ -76,6 +64,7 @@ const { result: cityEventsResult } = useQuery(
             description
             isAddressAccurate
             source
+            withoutExactTime
             image {
               id
               downloadUrl
@@ -168,8 +157,17 @@ const createMarker = ({ eventsByPoint, pointKey, pointLngLat, placeName }) => {
                           ${
                             !firstEvent.isAddressAccurate
                               ? `
-                              <span class="inaccurateAddress italic primary-color m-text m-subtitle" style="min-width: fit-content;">
+                              <span class="inaccurate-event-info italic primary-color m-text m-subtitle" style="min-width: fit-content;">
                               Неточный адрес.
+                              </span>
+                            `
+                              : ''
+                          }
+                          ${
+                            firstEvent.withoutExactTime
+                              ? `
+                              <span class="inaccurate-event-info italic primary-color m-text m-subtitle" style="min-width: fit-content;">
+                              Неточное время.
                               </span>
                             `
                               : ''
@@ -205,6 +203,7 @@ const createMarker = ({ eventsByPoint, pointKey, pointLngLat, placeName }) => {
       )
       .addTo(map.value);
 
+    const markers = placeName ? markersPlaces : markersCoords;
     markers.push(marker);
   }
 };
@@ -265,9 +264,13 @@ const eventsByPlaces = computed(() => {
   }, {});
 });
 
-watch([map, eventsByPlaces, readyForPlacesMarkersPainting], () => {
-  readyForPlacesMarkersPainting.value &&
-    map.value &&
+watch([map, eventsByPlaces], () => {
+  markersPlaces.forEach((marker) => {
+    marker.remove();
+  });
+  markersPlaces.length = 0;
+
+  map.value &&
     eventsByPlaces.value &&
     places.value?.forEach((place) => {
       createMarker({
@@ -277,7 +280,6 @@ watch([map, eventsByPlaces, readyForPlacesMarkersPainting], () => {
         placeName: place.name,
       });
     });
-  readyForPlacesMarkersPainting.value = false;
 });
 
 const eventsByCoords = computed(() => {
@@ -292,9 +294,13 @@ const eventsByCoords = computed(() => {
   }, {});
 });
 
-watch([map, eventsByCoords, readyForCoordsMarkersPainting], () => {
-  readyForCoordsMarkersPainting.value &&
-    map.value &&
+watch([map, eventsByCoords], () => {
+  markersCoords.forEach((marker) => {
+    marker.remove();
+  });
+  markersCoords.length = 0;
+
+  map.value &&
     Object.keys(eventsByCoords.value)?.forEach((coordinate) => {
       createMarker({
         eventsByPoint: eventsByCoords,
@@ -302,7 +308,6 @@ watch([map, eventsByCoords, readyForCoordsMarkersPainting], () => {
         pointLngLat: coordinate.split(', '),
       });
     });
-  readyForCoordsMarkersPainting.value = false;
 });
 </script>
 
@@ -388,7 +393,7 @@ watch([map, eventsByCoords, readyForCoordsMarkersPainting], () => {
   margin: 3.5px 0 0px;
 }
 
-.inaccurateAddress {
+.inaccurate-event-info {
   width: 100%;
   text-align: left;
 }

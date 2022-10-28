@@ -55,8 +55,9 @@ const closeDrawer = () => {
 <style lang="scss">
 @use '../styles/constants.scss' as *;
 
-.el-drawer__header {
+header.el-drawer__header {
   margin-bottom: 0;
+  padding: 0;
 }
 
 .drawer_container {
@@ -78,6 +79,10 @@ const closeDrawer = () => {
   right: calc(50%);
   border-radius: 8px;
   transform: translateX(50%);
+  cursor: pointer;
+  &:hover {
+    background-color: #778ca6;
+  }
   & > svg {
     width: 24px;
     height: 24px;
