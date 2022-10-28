@@ -247,6 +247,7 @@ watch([cityInfo], () => {
   map.value.addControl(
     new mapboxgl.GeolocateControl({
       trackUserLocation: true,
+      showUserHeading: true,
     })
   );
 });
@@ -313,6 +314,11 @@ watch([map, eventsByCoords], () => {
 
 <template>
   <div id="base_map"></div>
+  <el-button type="primary" class="feedback_fixed_btn"
+    ><a target="_blank" href="https://t.me/bllndman"
+      >Обратная связь</a
+    ></el-button
+  >
   <el-button
     type="primary"
     class="open_events_fixed_btn"
@@ -331,6 +337,17 @@ watch([map, eventsByCoords], () => {
   height: 100%;
 }
 
+.feedback_fixed_btn {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  padding: 0;
+  & a {
+    padding: 8px 15px;
+  }
+}
+
 .open_events_fixed_btn {
   position: fixed;
   bottom: 5%;
@@ -347,6 +364,14 @@ watch([map, eventsByCoords], () => {
   background: #cad2d3;
 }
 
+.mapboxgl-marker {
+  z-index: 1;
+}
+
+.mapboxgl-marker.mapboxgl-user-location-accuracy-circle {
+  z-index: 0;
+}
+
 .marker_events_btn {
   @extend .background_gray;
   border: none;
@@ -361,6 +386,7 @@ watch([map, eventsByCoords], () => {
   top: auto;
   bottom: 12%;
   left: 50%;
+  z-index: 1;
 }
 
 .events_popup > .mapboxgl-popup-tip {

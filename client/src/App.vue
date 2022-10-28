@@ -111,7 +111,7 @@ textarea {
 
 a {
   text-decoration: none;
-  color: $color-primary;
+  color: inherit;
 }
 
 nav a.router-link-exact-active {
