@@ -1,6 +1,6 @@
 <script setup>
 import { storeToRefs } from 'pinia';
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import useMainStore from '@/store';
 import PopupDrawer from '@/ui/PopupDrawer.vue';
 import mapLocationPath from '@/assets/map-location.svg';
@@ -31,6 +31,9 @@ const hrefToMap = computed(
       chosenEvent.value.isAddressAccurate ? 15 : 13
     }`
 );
+watch(chosenEvent, () => {
+  console.log(chosenEvent);
+});
 </script>
 <template>
   <PopupDrawer
@@ -41,7 +44,8 @@ const hrefToMap = computed(
     <CardComp v-bind="chosenEvent" :isBriefVersion="false" cardShadow="never" />
     <div class="buttons_wrap">
       <el-button type="primary"
-        ><a :href="hrefToMap"><img :src="mapLocationPath" class="btn_icon" /></a
+        ><a target="_blank" :href="hrefToMap"
+          ><img :src="mapLocationPath" class="btn_icon" /></a
       ></el-button>
     </div>
   </PopupDrawer>

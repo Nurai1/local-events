@@ -22,7 +22,19 @@ const cityInfo = reactive({
   maxBounds: undefined,
   center: undefined,
 });
-const markersIds = reactive([]);
+const markers = reactive([]);
+const readyForPlacesMarkersPainting = ref(true);
+const readyForCoordsMarkersPainting = ref(true);
+
+watch(filteredEvents, () => {
+  // TODO: add optimization to avoid delete if events length haven't changed
+  markers.forEach((marker) => {
+    marker.remove();
+  });
+  markers.length = 0;
+  readyForPlacesMarkersPainting.value = true;
+  readyForCoordsMarkersPainting.value = true;
+});
 
 const { result: cityPlacesResult } = useQuery(
   gql`
@@ -179,7 +191,7 @@ const createMarker = ({ eventsByPoint, pointKey, pointLngLat, placeName }) => {
                       </div>
                     `;
 
-    const markersId = new mapboxgl.Marker({
+    const marker = new mapboxgl.Marker({
       color: '#3d5a80',
     })
       .setLngLat(pointLngLat)
@@ -193,7 +205,7 @@ const createMarker = ({ eventsByPoint, pointKey, pointLngLat, placeName }) => {
       )
       .addTo(map.value);
 
-    markersIds.push(markersId);
+    markers.push(marker);
   }
 };
 
@@ -240,12 +252,6 @@ watch([cityInfo], () => {
   );
 });
 
-watch([filteredEvents], () => {
-  markersIds.forEach((markersId) => {
-    markersId.remove();
-  });
-});
-
 const eventsByPlaces = computed(() => {
   const eventsData = filteredEventsWithPlace.value;
   return places.value.reduce((acc, val) => {
@@ -259,17 +265,19 @@ const eventsByPlaces = computed(() => {
   }, {});
 });
 
-watch([map, eventsByPlaces], () => {
-  map.value &&
+watch([map, eventsByPlaces, readyForPlacesMarkersPainting], () => {
+  readyForPlacesMarkersPainting.value &&
+    map.value &&
     eventsByPlaces.value &&
     places.value?.forEach((place) => {
       createMarker({
         eventsByPoint: eventsByPlaces,
         pointKey: place.id,
-        pointLngLat: place.coordinates.coordinates,
+        pointLngLat: place.coordinates.coordinates.map(String),
         placeName: place.name,
       });
     });
+  readyForPlacesMarkersPainting.value = false;
 });
 
 const eventsByCoords = computed(() => {
@@ -284,8 +292,9 @@ const eventsByCoords = computed(() => {
   }, {});
 });
 
-watch([map, eventsByCoords], () => {
-  map.value &&
+watch([map, eventsByCoords, readyForCoordsMarkersPainting], () => {
+  readyForCoordsMarkersPainting.value &&
+    map.value &&
     Object.keys(eventsByCoords.value)?.forEach((coordinate) => {
       createMarker({
         eventsByPoint: eventsByCoords,
@@ -293,6 +302,7 @@ watch([map, eventsByCoords], () => {
         pointLngLat: coordinate.split(', '),
       });
     });
+  readyForCoordsMarkersPainting.value = false;
 });
 </script>
 

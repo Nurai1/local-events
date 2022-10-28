@@ -71,8 +71,8 @@ export default defineStore('main', () => {
   );
 
   const filteredEvents = computed(() => {
-    return events.value.filter(
-      (event) =>
+    return events.value.filter((event) => {
+      return (
         activeFilters.value.some((filterName) =>
           event.categories.items.some(
             (eventCategory) => eventCategory.value === filterName
@@ -85,7 +85,8 @@ export default defineStore('main', () => {
           new Date(event.eventDate).getTime() >= dateTimeRangeFilter[0]) &&
         (!dateTimeRangeFilter[1] ||
           new Date(event.eventDate).getTime() <= dateTimeRangeFilter[1])
-    );
+      );
+    });
   });
 
   const filteredEventsWithPlace = computed(() => {

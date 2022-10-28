@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { format } from 'date-fns';
 import omit from 'lodash/omit';
 import { Link as LinkIcon } from '@element-plus/icons-vue';
@@ -83,8 +83,12 @@ const filterToIconSrcMap = {
   masterClass: MasterClassIcon,
 };
 
-const formattedDate = format(new Date(props.eventDate), 'do MMMM');
-const formattedTime = format(new Date(props.eventDate), "HH':'mm");
+const formattedDate = computed(() =>
+  format(new Date(props.eventDate), 'do MMMM')
+);
+const formattedTime = computed(() =>
+  format(new Date(props.eventDate), "HH':'mm")
+);
 </script>
 
 <template>
