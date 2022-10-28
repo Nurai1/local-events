@@ -174,7 +174,6 @@ const formattedTime = format(new Date(props.eventDate), "HH':'mm");
 }
 .event_image {
   width: 100%;
-  height: 250px;
   object-fit: contain;
 }
 .truncate-4-lines {

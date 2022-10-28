@@ -114,10 +114,10 @@ const createMarker = ({ eventsByPoint, pointKey, pointLngLat, placeName }) => {
     );
     const formattedDate = format(new Date(firstEvent.eventDate), 'do MMMM');
     const formattedTime = format(new Date(firstEvent.eventDate), "HH':'mm");
-    const stringifiedEventsInPlace = JSON.stringify(eventsInPlace).replaceAll(
-      '"',
-      "'"
-    );
+    const stringifiedEventsInPlace = JSON.stringify(eventsInPlace)
+      .replaceAll("'", '&rsquo;')
+      .replaceAll('"', "'");
+
     const stringifiedFirstEvent = JSON.stringify(firstEvent)
       .replaceAll("'", '&rsquo;')
       .replaceAll('"', "'");
