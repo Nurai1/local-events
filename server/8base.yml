@@ -5,7 +5,7 @@ functions:
     type: task
     schedule: 'rate(2 hours)'
     description: Delete all passed events every 2 hours
-    refreshDateOfContinousEventsTask:
-      handler:
-        code: src/tasks/refreshDateOfContinousEvents.js
+  refreshDateOfContinousEventsTask:
+    handler:
+      code: src/tasks/refreshDateOfContinousEvents.js
     type: task
