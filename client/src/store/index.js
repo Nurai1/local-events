@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref, reactive, computed } from 'vue';
 import { useLocalStorage, StorageSerializers } from '@vueuse/core';
+import getEventPriceNumFromString from '@/utils/getEventPriceNumFromString';
 
 export default defineStore('main', () => {
   const chosenCity = useLocalStorage(
@@ -38,9 +39,6 @@ export default defineStore('main', () => {
   }
 
   const priceRange = ref(null);
-  function changePriceRange(range) {
-    priceRange.value = range;
-  }
 
   const places = ref([]);
   function setPlaces(value) {
@@ -57,8 +55,10 @@ export default defineStore('main', () => {
 
   const maxPriceFilter = computed(() => {
     return events.value.reduce((acc, ev) => {
-      if (ev.price > acc) {
-        return ev.price;
+      const curPrice = getEventPriceNumFromString(ev.price);
+
+      if (curPrice > acc) {
+        return curPrice;
       }
       return acc;
     }, 0);
@@ -72,6 +72,8 @@ export default defineStore('main', () => {
 
   const filteredEvents = computed(() => {
     return events.value.filter((event) => {
+      const eventPriceNum = getEventPriceNumFromString(event.price);
+
       return (
         activeFilters.value.some((filterName) =>
           event.categories.items.some(
@@ -79,8 +81,8 @@ export default defineStore('main', () => {
           )
         ) &&
         (!priceRange.value ||
-          (event.price >= priceRange.value[0] &&
-            event.price <= priceRange.value[1])) &&
+          (eventPriceNum >= priceRange.value[0] &&
+            eventPriceNum <= priceRange.value[1])) &&
         (!dateTimeRangeFilter[0] ||
           new Date(event.eventDate).getTime() >= dateTimeRangeFilter[0]) &&
         (!dateTimeRangeFilter[1] ||
@@ -119,7 +121,6 @@ export default defineStore('main', () => {
     setEventsCategories,
     changeFilterIsActive,
     priceRange,
-    changePriceRange,
     places,
     setPlaces,
     eventsWithPlace,
