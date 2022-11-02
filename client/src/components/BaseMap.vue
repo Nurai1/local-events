@@ -123,10 +123,20 @@ const createMarker = ({ eventsByPoint, pointKey, pointLngLat, placeName }) => {
       .replaceAll("'", '&rsquo;')
       .replaceAll('"', "'");
 
-    const priceText = firstEvent.price
-      ? (COUNTRY_CURRENCY_MAP[chosenCity.value.country] || '') +
-        firstEvent.price
-      : 'Бесплатно';
+    const priceText = (() => {
+      if (!firstEvent.price) return 'Бесплатно';
+
+      const isPriceNaN = isNaN(parseFloat(firstEvent.price));
+      const price = isPriceNaN
+        ? firstEvent.price
+        : parseFloat(firstEvent.price);
+
+      return (
+        ((!isPriceNaN && COUNTRY_CURRENCY_MAP[store.chosenCity.country]) ||
+          '') + price
+      );
+    })();
+
     const popUpHtml = `
                     <div>
                       ${

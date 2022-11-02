@@ -3,22 +3,30 @@ import { COUNTRY_CURRENCY_MAP } from '@/constants';
 import useMainStore from '@/store';
 import { computed } from 'vue';
 
-const props = defineProps({ price: Number });
+const props = defineProps({ price: String });
 const store = useMainStore();
 
-const priceText = computed(() =>
-  props.price
-    ? (COUNTRY_CURRENCY_MAP[store.chosenCity.country] || '') + props.price
-    : 'Бесплатно'
-);
+const isPriceNaN = computed(() => isNaN(parseFloat(props.price)));
+const priceText = computed(() => {
+  if (!props.price) return 'Бесплатно';
+
+  const price = isPriceNaN.value ? props.price : parseFloat(props.price);
+
+  return (
+    ((!isPriceNaN.value && COUNTRY_CURRENCY_MAP[store.chosenCity.country]) ||
+      '') + price
+  );
+});
 </script>
 <template>
-  <span :class="props.price ? '' : 'free-text'"> {{ priceText }}</span>
+  <span :class="props.price && !isPriceNaN ? '' : 'any-text'">
+    {{ priceText }}</span
+  >
 </template>
 <style lang="scss" scoped>
 @use '../styles/element/index.scss' as *;
 
-.free-text {
+.any-text {
   color: $color-primary;
   font-style: italic;
 }

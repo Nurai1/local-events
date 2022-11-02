@@ -34,7 +34,7 @@ const props = defineProps({
   },
   price: {
     required: true,
-    type: Number,
+    type: String,
   },
   eventDate: {
     required: true,
