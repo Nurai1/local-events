@@ -38,7 +38,7 @@ const marks = computed(() => ({
       >
     </template>
     <template v-if="!eventsByPoint">
-      <div class="title-info mb15">Категории</div>
+      <div class="title-info mb15">Categories</div>
       <div class="flx-wrap jus-con-start">
         <template v-for="filter of eventsCategories" :key="filter.id">
           <el-button
@@ -50,7 +50,7 @@ const marks = computed(() => ({
           ></el-button>
         </template>
       </div>
-      <div class="title-info">Цена</div>
+      <div class="title-info">Price</div>
       <div class="slider-wrapper">
         <el-slider
           v-model="store.priceRange"
@@ -60,33 +60,33 @@ const marks = computed(() => ({
           :marks="marks"
         />
       </div>
-      <div class="title-info">Дата</div>
+      <div class="title-info">Date</div>
       <div class="jus-con-sp-bet date-picker-wrapper">
         <DatePicker
-          placeholder="Дата от"
+          placeholder="Date From"
           teleportCenter
           v-model="store.dateTimeRangeFilter[0]"
           modelType="timestamp"
           format="dd/MM/yyyy HH:mm"
-          selectText="Выбрать"
-          cancelText="Отмена"
+          selectText="Select"
+          cancelText="Cancel"
           hideInputIcon
           inputClassName="dp-cus-input"
         ></DatePicker>
         <DatePicker
-          placeholder="Дата до"
+          placeholder="Date To"
           teleportCenter
           v-model="store.dateTimeRangeFilter[1]"
           modelType="timestamp"
           format="dd/MM/yyyy HH:mm"
-          selectText="Выбрать"
-          cancelText="Отмена"
+          selectText="Select"
+          cancelText="Cancel"
           hideInputIcon
           inputClassName="dp-cus-input"
         ></DatePicker>
       </div>
     </template>
-    <!-- <h3>События</h3> -->
+    <!-- <h3>Events</h3> -->
     <div class="events_container">
       <template v-for="event in data" :key="event.id">
         <CardComp v-bind="event" :isBriefVersion="true" />

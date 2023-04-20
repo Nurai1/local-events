@@ -124,7 +124,7 @@ const createMarker = ({ eventsByPoint, pointKey, pointLngLat, placeName }) => {
       .replaceAll('"', "'");
 
     const priceText = (() => {
-      if (!firstEvent.price) return 'Бесплатно';
+      if (!firstEvent.price) return 'Free';
 
       const isPriceNaN = isNaN(parseFloat(firstEvent.price));
       const price = isPriceNaN
@@ -168,7 +168,7 @@ const createMarker = ({ eventsByPoint, pointKey, pointLngLat, placeName }) => {
                             !firstEvent.isAddressAccurate
                               ? `
                               <span class="inaccurate-event-info italic primary-color m-text m-subtitle" style="min-width: fit-content;">
-                              Неточный адрес.
+                                Inaccurate address.
                               </span>
                             `
                               : ''
@@ -177,7 +177,7 @@ const createMarker = ({ eventsByPoint, pointKey, pointLngLat, placeName }) => {
                             firstEvent.withoutExactTime
                               ? `
                               <span class="inaccurate-event-info italic primary-color m-text m-subtitle" style="min-width: fit-content;">
-                              Неточное время.
+                                Inaccurate time.
                               </span>
                             `
                               : ''
@@ -192,7 +192,7 @@ const createMarker = ({ eventsByPoint, pointKey, pointLngLat, placeName }) => {
                               window.$piniaInstance.setEventsPopupVisibility(true);
                               window.$piniaInstance.setEventInfoPopupVisibility(false);
                               window.$piniaInstance.setEventsByPoint(${stringifiedEventsInPlace});
-                            ">Показать все</button>
+                            ">Show all</button>
                         `
                           : ''
                       }
@@ -325,9 +325,7 @@ watch([map, eventsByCoords], () => {
 <template>
   <div id="base_map"></div>
   <el-button type="primary" class="feedback_fixed_btn"
-    ><a target="_blank" href="https://t.me/bllndman"
-      >Обратная связь</a
-    ></el-button
+    ><a target="_blank" href="https://t.me/bllndman">Feedback</a></el-button
   >
   <el-button
     type="primary"
@@ -337,7 +335,7 @@ watch([map, eventsByCoords], () => {
       store.setEventInfoPopupVisibility(false);
       store.setEventsByPoint(null);
     "
-    >Список мероприятий</el-button
+    >List of Events</el-button
   >
 </template>
 

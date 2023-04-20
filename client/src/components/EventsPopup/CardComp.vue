@@ -113,7 +113,7 @@ const formattedTime = computed(() =>
       :href="source"
       target="_blank"
     >
-      <span class="subtitle">Источник</span>
+      <span class="subtitle">Source</span>
       <el-icon class="info-color el-icon--right"><LinkIcon /></el-icon>
     </a>
     <div class="title_block">
@@ -147,14 +147,14 @@ const formattedTime = computed(() =>
       class="inaccurate-event-info italic primary-color m-text m-subtitle"
       style="min-width: fit-content"
     >
-      Неточный адрес.
+      Inaccurate address.
     </span>
     <span
       v-if="withoutExactTime"
       class="inaccurate-event-info italic primary-color m-text m-subtitle"
       style="min-width: fit-content"
     >
-      Неточное время.
+      Inaccurate time.
     </span>
     <div class="body_block" v-if="description || !isBriefVersion">
       <span
@@ -162,7 +162,7 @@ const formattedTime = computed(() =>
         ref="descriptionRef"
         >{{ description }}</span
       >
-      {{ !description && !isBriefVersion ? 'Без описания.' : '' }}
+      {{ !description && !isBriefVersion ? 'No description.' : '' }}
     </div>
   </el-card>
 </template>

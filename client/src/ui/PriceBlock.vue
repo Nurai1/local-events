@@ -8,7 +8,7 @@ const store = useMainStore();
 
 const isPriceNaN = computed(() => isNaN(parseFloat(props.price)));
 const priceText = computed(() => {
-  if (!props.price) return 'Бесплатно';
+  if (!props.price) return 'Free';
 
   const price = isPriceNaN.value ? props.price : parseFloat(props.price);
 
